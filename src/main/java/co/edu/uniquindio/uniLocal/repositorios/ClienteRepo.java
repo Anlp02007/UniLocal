@@ -1,9 +1,7 @@
 package co.edu.uniquindio.uniLocal.repositorios;
 
-import co.edu.uniquindio.uniLocal.dto.SesionDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
-import co.edu.uniquindio.uniLocal.servicios.interfaces.ClienteServicio;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -21,12 +19,15 @@ public interface ClienteRepo extends MongoRepository<Cliente, String> {
     @Query("{'email' : ?0, 'password' : ?1}")
     Cliente buscarPorEmailYPassword(String email, String password);
 
+    @Query("{'email' : ?0, 'password' : ?1}")
     Cliente findByEmailAndPassword(String email, String password);
 
+    @Query("{'nickname': ?0}")
     Cliente buscarPorNickname(String nickname);
 
     Optional<Cliente>findByNickname(String nickname);
 
+    @Query("{'estadoRegistro': ?0}")
     List<Cliente> findByEstado(EstadoRegistro estadoRegistro);
 
 
