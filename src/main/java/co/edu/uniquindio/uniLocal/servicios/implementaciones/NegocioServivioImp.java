@@ -39,6 +39,7 @@ public class NegocioServivioImp implements NegocioServicio {
 
     @Override
     public void cambiarEstado() {
+        actualizarNegocio();
 
     }
 

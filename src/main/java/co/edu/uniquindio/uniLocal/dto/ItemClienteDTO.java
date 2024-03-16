@@ -1,5 +1,6 @@
 package co.edu.uniquindio.uniLocal.dto;
 
+import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 

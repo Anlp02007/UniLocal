@@ -17,15 +17,10 @@ public interface ClienteRepo extends MongoRepository<Cliente, String> {
     Optional<Cliente> findByEmail(String email);
 
     @Query("{'email' : ?0, 'password' : ?1}")
-    Cliente buscarPorEmailYPassword(String email, String password);
-
-    @Query("{'email' : ?0, 'password' : ?1}")
     Cliente findByEmailAndPassword(String email, String password);
 
     @Query("{'nickname': ?0}")
     Cliente buscarPorNickname(String nickname);
-
-    Optional<Cliente>findByNickname(String nickname);
 
     @Query("{'estadoRegistro': ?0}")
     List<Cliente> findByEstado(EstadoRegistro estadoRegistro);

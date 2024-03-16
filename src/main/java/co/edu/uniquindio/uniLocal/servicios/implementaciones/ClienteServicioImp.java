@@ -148,8 +148,6 @@ public class ClienteServicioImp implements ClienteServicio {
                 cliente.getCiudad()
         );
 
-
-
     }
 
     public List<ItemClienteDTO> ListarClientes(){
@@ -163,9 +161,32 @@ public class ClienteServicioImp implements ClienteServicio {
                         cliente.getFotoPerfil(),
                         cliente.getNickname(),
                         cliente.getCiudad())
+        ).toList();
+    }
 
+    public List<ItemClienteDTO> listarClientesActivos(){
 
+        List<Cliente> clientes = clienteRepo.findByEstado(EstadoRegistro.ACTIVO);
+        return (List<ItemClienteDTO>) clientes.stream().map(cliente ->
+                new ItemClienteDTO(
+                        cliente.getCodigoCliente(),
+                        cliente.getNombre(),
+                        cliente.getFotoPerfil(),
+                        cliente.getNickname(),
+                        cliente.getCiudad())
+        ).toList();
+    }
 
+    public List<ItemClienteDTO> listarClientesInactivos(){
+
+        List<Cliente> clientes = clienteRepo.findByEstado(EstadoRegistro.INACTIVO);
+        return (List<ItemClienteDTO>) clientes.stream().map(cliente ->
+                new ItemClienteDTO(
+                        cliente.getCodigoCliente(),
+                        cliente.getNombre(),
+                        cliente.getFotoPerfil(),
+                        cliente.getNickname(),
+                        cliente.getCiudad())
         ).toList();
     }
 }

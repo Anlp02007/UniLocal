@@ -20,7 +20,6 @@ import java.util.Optional;
 
 @Transactional
 @Service
-
 public class ComentarioServicioImp implements ComentarioServicio {
 
     private ComentarioRepo comentarioRepo;
@@ -40,7 +39,6 @@ public class ComentarioServicioImp implements ComentarioServicio {
             throw new Exception("El cliente no esta registrado");
         }
 
-
         Comentario comentario = new Comentario();
         comentario.setFecha(LocalDateTime.now().toLocalDate());
         comentario.setCodigoCliente(comentarioDTO.codigoCliente());
@@ -48,12 +46,7 @@ public class ComentarioServicioImp implements ComentarioServicio {
         comentario.setCodigoNegocio(comentarioDTO.codigoNegocio());
         comentario.setMensaje(comentarioDTO.mensaje());
 
-
-
         Comentario comentarioGuardado = comentarioRepo.save(comentario);
-
-
-
 
     }
 
@@ -62,12 +55,12 @@ public class ComentarioServicioImp implements ComentarioServicio {
         Optional<Cliente> clienteOptional = comentarioRepo.findByCodigoCliente(responderComDTO.codigoCliente());
 
         if (clienteOptional.isEmpty()){
-            throw new Exception("Ecliente no esta registrado");
+            throw new Exception("El cliente no esta registrado");
         }
         Optional<Negocio> negocioOptional = comentarioRepo.findByCodigoNegocio(responderComDTO.codigoNegocio());
 
         if (negocioOptional.isEmpty()){
-            throw new Exception("Ecliente no esta registrado");
+            throw new Exception("El cliente no esta registrado");
         }
 
 
@@ -81,6 +74,11 @@ public class ComentarioServicioImp implements ComentarioServicio {
         Comentario respuestaGuardada  = comentarioRepo.save(comentario);
 
 
+    }
+
+    public boolean existeComentario(String codigoComentario){
+        Comentario comentario = comentarioRepo.findByCodigoComentario(codigoComentario);
+        return comentario!=null;
     }
 
     @Override
