@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 
 public record ActualizarClienteDTO (
         //attributos de actualizar cliente M
+        //maximo de carracteres por cada atributo
         String id,
         @NotBlank @Length(max = 100) String nombre,
         String fotoPerfil,
