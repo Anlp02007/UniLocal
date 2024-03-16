@@ -12,7 +12,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @ToString(onlyExplicitlyIncluded = true)
 public class Cliente extends Cuenta {
-    //attributos de la clase cliente
     private String fotoPerfil;
     private String codigoCliente;
     private String nickname;
