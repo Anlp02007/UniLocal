@@ -1,9 +1,6 @@
 package co.edu.uniquindio.uniLocal.servicios.implementaciones;
 
-import co.edu.uniquindio.uniLocal.dto.ActualizarClienteDTO;
-import co.edu.uniquindio.uniLocal.dto.ActualizarModeradorDTO;
-import co.edu.uniquindio.uniLocal.dto.CambioPasswordDTO;
-import co.edu.uniquindio.uniLocal.dto.SesionDTO;
+import co.edu.uniquindio.uniLocal.dto.*;
 import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.documento.Moderador;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
@@ -12,6 +9,7 @@ import co.edu.uniquindio.uniLocal.servicios.interfaces.ModeradorServicio;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -88,6 +86,26 @@ public class ModeradorServicioImp implements ModeradorServicio {
 
 
         moderadorRepo.save(moderador);
+    }
+
+    public List<ItemModeradorDTO> listarModeradoresActivos(){
+
+        List<Moderador> moderadores = moderadorRepo.findByEstado(EstadoRegistro.ACTIVO);
+        return (List<ItemModeradorDTO>) moderadores.stream().map(moderador ->
+                new ItemModeradorDTO(
+                        moderador.getCodigoModerador(),
+                        moderador.getNombre())
+        ).toList();
+    }
+
+    public List<ItemModeradorDTO> listarModeradoresInactivos(){
+
+        List<Moderador> moderadores = moderadorRepo.findByEstado(EstadoRegistro.INACTIVO);
+        return (List<ItemModeradorDTO>) moderadores.stream().map(moderador ->
+                new ItemModeradorDTO(
+                        moderador.getCodigoModerador(),
+                        moderador.getNombre())
+        ).toList();
     }
 
 }
