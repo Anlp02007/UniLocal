@@ -25,8 +25,8 @@ public class Negocio implements Serializable {
     private String descripcion;
     private List <String> horario;
     private List <String> imagen;
-    private List <EstadoRegistro>estado;
+    private EstadoRegistro estadoRegistros;
     private List <HistoriaRevicion> historiaRevicions;
-    private List <TipoNegocio>tipoNegocio;
+    private TipoNegocio tipoNegocio;
     private List <String> telefono;
 }
