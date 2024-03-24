@@ -86,12 +86,7 @@ public class NegocioServicioTest {
                 imagen,
                 new Ubicacion(0,0)
         );
-
-        try {
             negocioServicio.actualizarNegocio(actualizarNegocioDTO);
-        }catch (Exception e){
-            //"Se esperaba que no lanzara una excepción, ya que se actualiza el negcio.
-        }
     }
 
     @Test
@@ -118,10 +113,9 @@ public class NegocioServicioTest {
 
     @Test
     void eliminarNegocioSuccessTest() throws Exception {
-        try {
+
             negocioServicio.eliminarNegocio("_negocio3");
-        }catch (Exception e){
-        }
+
     }
 
     @Test
