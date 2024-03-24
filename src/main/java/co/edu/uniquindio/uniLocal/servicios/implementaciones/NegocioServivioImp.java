@@ -131,17 +131,11 @@ public class NegocioServivioImp implements NegocioServicio {
 
 
     @Override
-    public List<ItemNegocioDTO> filtrarPorEstado(String estado) throws Exception{
-        List<Negocio> negocios = new  ArrayList<>();
-        if (estado.equals(EstadoRegistro.ACTIVO)){
+    public List<ItemNegocioDTO> filtrarPorEstado(EstadoRegistro estado) throws Exception{
 
-            negocios = negocioRepo.listarPorEstado(EstadoRegistro.ACTIVO);
+        List<Negocio> negocios = negocioRepo.listarPorEstado(estado);
 
-        }else {
-            negocios = negocioRepo.listarPorEstado(EstadoRegistro.INACTIVO);
-
-        }
-        return (List<ItemNegocioDTO>) negocios.stream().map(negocio ->
+        return negocios.stream().map(negocio ->
                 new ItemNegocioDTO(
                         negocio.getNombre(),
                         negocio.getUbicacion(),

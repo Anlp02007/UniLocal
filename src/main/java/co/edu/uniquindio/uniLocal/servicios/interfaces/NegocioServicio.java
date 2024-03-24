@@ -5,6 +5,7 @@ import co.edu.uniquindio.uniLocal.dto.CrearNegocioDTO;
 import co.edu.uniquindio.uniLocal.dto.ItemNegocioDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Ubicacion;
+import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.modelo.enums.TipoNegocio;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public interface NegocioServicio {
 
      List<ItemNegocioDTO>buscarNegocios(String nonbre , TipoNegocio tipoNegocio, Ubicacion ubicacion) throws Exception;
 
-     List<ItemNegocioDTO> filtrarPorEstado(String estado) throws Exception;
+     List<ItemNegocioDTO> filtrarPorEstado(EstadoRegistro estado) throws Exception;
 
     List<ItemNegocioDTO> listarNegociosPropietario(String codigoPropietario) throws Exception;
 

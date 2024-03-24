@@ -6,6 +6,7 @@ import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ClienteServicio;
 import jakarta.websocket.ClientEndpointConfig;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,9 +14,10 @@ import java.util.List;
 import java.util.Optional;
 @Transactional
 @Service
+@RequiredArgsConstructor
 public class ClienteServicioImp implements ClienteServicio {
 
-    private ClienteRepo clienteRepo;
+    private final ClienteRepo clienteRepo;
     @Override
     public String registrarse(RegistroClienteDTO registroClienteDTO) throws Exception {
 

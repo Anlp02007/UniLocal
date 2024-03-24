@@ -11,5 +11,5 @@ public interface ComentarioServicio {
 
     void listarComentariosNegocio(String codigoNegocio);
 
-    void calcularPromedioCalificaciones();
+    float calcularPromedioCalificaciones(String codigoNegocio);
 }

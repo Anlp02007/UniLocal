@@ -8,6 +8,7 @@ import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
 import co.edu.uniquindio.uniLocal.repositorios.ComentarioRepo;
 import co.edu.uniquindio.uniLocal.repositorios.NegocioRepo;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ComentarioServicio;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.util.Optional;
 
 @Transactional
 @Service
+@RequiredArgsConstructor
 public class ComentarioServicioImp implements ComentarioServicio {
 
     private ComentarioRepo comentarioRepo;
@@ -84,6 +86,8 @@ public class ComentarioServicioImp implements ComentarioServicio {
     @Override
     public void listarComentariosNegocio(String codigoNegocio) {
 
+      //  List<Comentario>obtenerComentario = comentarioRepo.obternerComentario(codigoNegocio);
+
 
 
 
@@ -91,7 +95,11 @@ public class ComentarioServicioImp implements ComentarioServicio {
     }
 
     @Override
-    public void calcularPromedioCalificaciones() {
+    public float calcularPromedioCalificaciones(String codigoNegocio) {
 
+        float comentario= comentarioRepo.calcularPromedio(codigoNegocio);
+
+
+        return comentario;
     }
 }

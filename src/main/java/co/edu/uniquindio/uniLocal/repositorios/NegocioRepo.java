@@ -31,7 +31,7 @@ public interface NegocioRepo extends MongoRepository<Negocio,String> {
     List<Negocio>listarPorNombre(String nombre);
     @Query("{'ubicacion': ?0}")
     List<Negocio>listarPorUbicacion(Ubicacion ubicacion);
-    @Query("{'estadoRegistros': ?0}")
+    @Query("{'estadoRegistros': ?0, ''}")
     List<Negocio>listarPorEstado(EstadoRegistro estadoRegistro);
 
 

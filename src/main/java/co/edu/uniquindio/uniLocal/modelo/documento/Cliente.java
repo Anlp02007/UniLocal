@@ -2,6 +2,7 @@ package co.edu.uniquindio.uniLocal.modelo.documento;
 
 import co.edu.uniquindio.uniLocal.modelo.entidades.Cuenta;
 import lombok.*;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -12,8 +13,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 @ToString(onlyExplicitlyIncluded = true)
 public class Cliente extends Cuenta {
-    private String fotoPerfil;
+
+    @Id
     private String codigoCliente;
+
+    private String fotoPerfil;
     private String nickname;
     private String ciudad;
 
