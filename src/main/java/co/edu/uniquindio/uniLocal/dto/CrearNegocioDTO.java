@@ -1,5 +1,6 @@
 package co.edu.uniquindio.uniLocal.dto;
 
+import co.edu.uniquindio.uniLocal.modelo.entidades.Horario;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Ubicacion;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoNegocio;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
@@ -16,7 +17,7 @@ public record CrearNegocioDTO(
         @NotBlank String descripcion,
         String codigoPropietario,
         Ubicacion ubicacion,
-        List<String> horario,
+        List<Horario> horario,
         List<String> imagen,
         TipoNegocio tipoNegocios,
         List<String> telefono

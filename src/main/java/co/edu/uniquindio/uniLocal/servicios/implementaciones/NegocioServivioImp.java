@@ -9,6 +9,7 @@ import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.modelo.enums.TipoNegocio;
 import co.edu.uniquindio.uniLocal.repositorios.NegocioRepo;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.NegocioServicio;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,41 +19,46 @@ import java.util.Optional;
 
 @Transactional
 @Service
+@RequiredArgsConstructor
 public class NegocioServivioImp implements NegocioServicio {
 
-    private NegocioRepo negocioRepo;
+    private final NegocioRepo negocioRepo;
     @Override
     public String crearNegocio(CrearNegocioDTO crearNegocioDTO) throws Exception {
 
+        if(!existeNegocio(crearNegocioDTO.codigoNegocio())){
+            Negocio negocio = new Negocio();
+            negocio.setCodigoNegocio(crearNegocioDTO.codigoNegocio());
+            negocio.setCodigoCliente(crearNegocioDTO.codigoPropietario());
+            negocio.setNombre(crearNegocioDTO.nombre());
+            negocio.setDescripcion(crearNegocioDTO.descripcion());
+            negocio.setHorario(crearNegocioDTO.horario());
+            negocio.setTipoNegocio(crearNegocioDTO.tipoNegocios());
+            negocio.setImagen(crearNegocioDTO.imagen());
+            negocio.setUbicacion(crearNegocioDTO.ubicacion());
+            negocio.setTelefono(crearNegocioDTO.telefono());
+            negocio.setEstadoRegistros(EstadoRegistro.ACTIVO);
 
-        Negocio negocio = new Negocio();
-        negocio.setCodigoNegocio(crearNegocioDTO.codigoNegocio());
-        negocio.setCodigoCliente(crearNegocioDTO.codigoPropietario());
-        negocio.setNombre(crearNegocioDTO.nombre());
-        negocio.setDescripcion(crearNegocioDTO.descripcion());
-        negocio.setHorario(crearNegocioDTO.horario());
-        negocio.setTipoNegocio(crearNegocioDTO.tipoNegocios());
-        negocio.setImagen(crearNegocioDTO.imagen());
-        negocio.setUbicacion(crearNegocioDTO.ubicacion());
-        negocio.setTelefono(crearNegocioDTO.telefono());
-        negocio.setEstadoRegistros(EstadoRegistro.ACTIVO);
+            Negocio negocioGuardado = negocioRepo.save(negocio);
 
-        Negocio negocioGuardado = negocioRepo.save(negocio);
+            return negocioGuardado.getCodigoNegocio();
+        }
+        throw new Exception("El negocio ya se encuentra registrado");
+    }
 
-        return negocioGuardado.getCodigoNegocio();
-
+    private Boolean existeNegocio(String codigo){
+        Negocio negocio = negocioRepo.findByCodigoNegocio(codigo);
+        return negocio!=null;
     }
 
     @Override
     public void actualizarNegocio(ActualizarNegocioDTO actualizarNegocioDTO) throws Exception {
 
-        Optional<Negocio> negocioOptional = negocioRepo.findById(actualizarNegocioDTO.id());
-
-        if (negocioOptional.isEmpty()) {
+        if (!existeNegocio(actualizarNegocioDTO.id())) {
             throw new Exception("El negocio no está registrado");
         }
 
-        Negocio negocio = negocioOptional.get();
+        Negocio negocio = buscarNegocioId(actualizarNegocioDTO.id());
         negocio.setNombre(actualizarNegocioDTO.nombre());
         negocio.setTelefono(actualizarNegocioDTO.telefono());
         negocio.setUbicacion(actualizarNegocioDTO.ubicacion());
@@ -65,11 +71,21 @@ public class NegocioServivioImp implements NegocioServicio {
     }
 
     @Override
+    public Negocio buscarNegocioId(String idNegocio) throws Exception {
+        if(existeNegocio(idNegocio)){
+            return negocioRepo.findByCodigoNegocio(idNegocio);
+        }
+
+        throw new Exception("el negocio no existe");
+    }
+
+
+    @Override
     public void eliminarNegocio(String idNegocio) throws Exception {
 
-        Optional<Negocio> negocioOptional = negocioRepo.findById(idNegocio);
+        Negocio negocioOptional = negocioRepo.findById(idNegocio);
 
-        if (negocioOptional.isEmpty()) {
+        if (negocioOptional==null) {
             throw new Exception("No se encontró el negocio a eliminar");
         }
 
@@ -83,11 +99,14 @@ public class NegocioServivioImp implements NegocioServicio {
 
 
     @Override
-    public List<ItemNegocioDTO> buscarNegocios(String nombre, TipoNegocio tipoNegocio, Ubicacion ubicacion) throws Exception {
+    public List<Negocio> buscarNegocios(ItemNegocioDTO itemNegocioDTO) throws Exception {
 
         List<Negocio> negocios = new ArrayList<>();
 
-        if (nombre != null && tipoNegocio != null && ubicacion != null){
+        String nombre = itemNegocioDTO.nombre();;
+        TipoNegocio tipoNegocio = itemNegocioDTO.tipoNegocio();
+        Ubicacion ubicacion= itemNegocioDTO.ubicacion();
+        if (nombre!= null && tipoNegocio != null && ubicacion != null){
             negocios = negocioRepo.listarPorTresFiltros(tipoNegocio,nombre,ubicacion);
         }
         else if (nombre != null && tipoNegocio != null){
@@ -116,51 +135,24 @@ public class NegocioServivioImp implements NegocioServicio {
             negocios = negocioRepo.findAll();
         }
 
-        return (List<ItemNegocioDTO>) negocios.stream().map(negocio ->
-                new ItemNegocioDTO(
-                        negocio.getNombre(),
-                        negocio.getUbicacion(),
-                        negocio.getHorario(),
-                        negocio.getImagen(),
-                        negocio.getDescripcion(),
-                        negocio.getTelefono(),
-                        negocio.getEstadoRegistros())
-                ).toList();
+        return negocios;
     }
 
 
 
     @Override
-    public List<ItemNegocioDTO> filtrarPorEstado(EstadoRegistro estado) throws Exception{
+    public List<Negocio> filtrarPorEstado(EstadoRegistro estado) throws Exception{
 
         List<Negocio> negocios = negocioRepo.listarPorEstado(estado);
 
-        return negocios.stream().map(negocio ->
-                new ItemNegocioDTO(
-                        negocio.getNombre(),
-                        negocio.getUbicacion(),
-                        negocio.getHorario(),
-                        negocio.getImagen(),
-                        negocio.getDescripcion(),
-                        negocio.getTelefono(),
-                        negocio.getEstadoRegistros())
-        ).toList();
+        return negocios;
 
     }
 
     @Override
-    public List<ItemNegocioDTO> listarNegociosPropietario(String codigoPropietario) throws Exception {
-        List<Negocio> negocios = new  ArrayList<>();
-        return (List<ItemNegocioDTO>) negocios.stream().map(negocio ->
-                new ItemNegocioDTO(
-                        negocio.getNombre(),
-                        negocio.getUbicacion(),
-                        negocio.getHorario(),
-                        negocio.getImagen(),
-                        negocio.getDescripcion(),
-                        negocio.getTelefono(),
-                        negocio.getEstadoRegistros())
-        ).toList();
+    public List<Negocio> listarNegociosPropietario(String codigoPropietario) throws Exception {
+        List<Negocio> negocios = negocioRepo.listarPorPropietarioNegocio(codigoPropietario);
+        return negocios;
 
     }
 

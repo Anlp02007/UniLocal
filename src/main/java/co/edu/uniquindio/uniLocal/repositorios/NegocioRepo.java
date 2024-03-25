@@ -8,11 +8,13 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface NegocioRepo extends MongoRepository<Negocio,String> {
 
     @Query("{'codigoNegocio': ?0}")
     Negocio findByCodigoNegocio(String codigoNegocio);
+    x Negocio findById(String id);
     @Query("{'tipoNegocio': ?0}")
     List<Negocio>listarPorTipoNegocio(TipoNegocio tipoNegocio);
     @Query("{'codigoPropietario': ?0}")

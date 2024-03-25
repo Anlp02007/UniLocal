@@ -19,13 +19,16 @@ public interface NegocioServicio {
 
     void actualizarNegocio(ActualizarNegocioDTO actualizarNegocioDTO) throws Exception;
 
+    Negocio buscarNegocioId(String idNegocio) throws Exception;
+
+
     void eliminarNegocio(String idNegocio) throws Exception;
 
-     List<ItemNegocioDTO>buscarNegocios(String nonbre , TipoNegocio tipoNegocio, Ubicacion ubicacion) throws Exception;
+     List<Negocio>buscarNegocios(ItemNegocioDTO itemNegocioDTO) throws Exception;
 
-     List<ItemNegocioDTO> filtrarPorEstado(EstadoRegistro estado) throws Exception;
+     List<Negocio> filtrarPorEstado(EstadoRegistro estado) throws Exception;
 
-    List<ItemNegocioDTO> listarNegociosPropietario(String codigoPropietario) throws Exception;
+    List<Negocio> listarNegociosPropietario(String codigoPropietario) throws Exception;
 
     void cambiarEstado();
 

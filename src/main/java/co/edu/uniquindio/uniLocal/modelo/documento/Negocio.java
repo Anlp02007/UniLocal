@@ -1,6 +1,7 @@
 package co.edu.uniquindio.uniLocal.modelo.documento;
 
 import co.edu.uniquindio.uniLocal.modelo.entidades.HistoriaRevicion;
+import co.edu.uniquindio.uniLocal.modelo.entidades.Horario;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Ubicacion;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.modelo.enums.TipoNegocio;
@@ -23,7 +24,7 @@ public class Negocio implements Serializable {
     private String codigoCliente;
     private String nombre;
     private String descripcion;
-    private List <String> horario;
+    private List <Horario> horario;
     private List <String> imagen;
     private EstadoRegistro estadoRegistros;
     private List <HistoriaRevicion> historiaRevicions;
