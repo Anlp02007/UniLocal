@@ -25,8 +25,16 @@ public class NegocioServivioImp implements NegocioServicio {
     private final NegocioRepo negocioRepo;
     @Override
     public String crearNegocio(CrearNegocioDTO crearNegocioDTO) throws Exception {
+        
+        if(existeNegocio(crearNegocioDTO.codigoNegocio())){
+            throw new Exception("El email ya esta en uso por otra persona");
+        }
 
-        if(!existeNegocio(crearNegocioDTO.codigoNegocio())){
+        if(existeCodigoCliente(crearNegocioDTO.codigoPropietario())){
+            throw new Exception("El nickname ya ests en uso por otra persona ");
+        }
+
+       
             Negocio negocio = new Negocio();
             negocio.setCodigoNegocio(crearNegocioDTO.codigoNegocio());
             negocio.setCodigoCliente(crearNegocioDTO.codigoPropietario());
@@ -43,8 +51,15 @@ public class NegocioServivioImp implements NegocioServicio {
 
             return negocioGuardado.getCodigoNegocio();
         }
-        throw new Exception("El negocio ya se encuentra registrado");
+
+    private boolean existeCodigoCliente(String s) {
+        Negocio negocio = negocioRepo.findByCodigoCliente(s);
+        return negocio!=null;
     }
+     
+
+ 
+
 
     private Boolean existeNegocio(String codigo){
         Negocio negocio = negocioRepo.findByCodigoNegocio(codigo);
