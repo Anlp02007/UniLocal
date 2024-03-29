@@ -7,7 +7,8 @@ public record ComentarioDTO(
         String codigoCliente,
         String codigoComentario,
         String codigoNegocio,
-        String mensaje
+        String mensaje,
+        int calificaion
 
 
 ) {

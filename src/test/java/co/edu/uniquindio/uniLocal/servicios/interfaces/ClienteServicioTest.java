@@ -21,8 +21,8 @@ public class ClienteServicioTest {
         RegistroClienteDTO registroClienteDTO = new RegistroClienteDTO(
                 "Juan",
                 "mi foto",
-                "juanito2",
-                "juan2@email.com",
+                "juanito1",
+                "juan1@email.com",
                 "mipassword",
                 "Armenia"
         );
@@ -36,18 +36,13 @@ public class ClienteServicioTest {
     public void editarPerfilSuccess() throws Exception{
 
         ActualizarClienteDTO registroClienteDTO = new ActualizarClienteDTO(
-                "660090d7d150c72ed3fbaa54",
+                "6605d5bd79d2d70e68caeded",
                 "Juanito 2",
                 "mi foto",
-                "juan2@email.com",
+                "juan1@email.com",
                 "Armenia"
         );
-        try{
             clienteServicio.editarPerfil(registroClienteDTO);
-
-        }catch (Exception e){
-            fail("Se esperaba que no lanzara una excepción, ya que esta modificando un cliente existente.");
-        }
     }
 
     @Test

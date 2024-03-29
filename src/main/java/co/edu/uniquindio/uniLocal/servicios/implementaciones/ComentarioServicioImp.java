@@ -5,6 +5,7 @@ import co.edu.uniquindio.uniLocal.dto.ResponderComDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.documento.Comentario;
 import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
+import co.edu.uniquindio.uniLocal.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal.repositorios.ComentarioRepo;
 import co.edu.uniquindio.uniLocal.repositorios.NegocioRepo;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ComentarioServicio;
@@ -24,20 +25,24 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ComentarioServicioImp implements ComentarioServicio {
 
-    private ComentarioRepo comentarioRepo;
+    private final ComentarioRepo comentarioRepo;
+
+    private final ClienteRepo clienteRepo;
+
+    private final NegocioRepo negocioRepo;
     private LocalDate localDate;
 
     @Override
     public void crearComentario(ComentarioDTO comentarioDTO) throws Exception {
 
-        Optional<Cliente> clienteOptional = comentarioRepo.findByCodigoCliente(comentarioDTO.codigoCliente());
+        Optional<Cliente> clienteOptional = clienteRepo.findById(comentarioDTO.codigoCliente());
 
         if (clienteOptional.isEmpty()){
             throw new Exception("El cliente no esta registrado");
         }
-        Optional<Negocio> negocioOptional = comentarioRepo.findByCodigoNegocio(comentarioDTO.codigoNegocio());
+        Negocio negocioOptional = negocioRepo.findByCodigoNegocio(comentarioDTO.codigoNegocio());
 
-        if (negocioOptional.isEmpty()){
+        if (negocioOptional==null){
             throw new Exception("El cliente no esta registrado");
         }
 
@@ -47,6 +52,7 @@ public class ComentarioServicioImp implements ComentarioServicio {
         comentario.setCodigoComentario(comentarioDTO.codigoComentario());
         comentario.setCodigoNegocio(comentarioDTO.codigoNegocio());
         comentario.setMensaje(comentarioDTO.mensaje());
+        comentario.setCalificacion(comentarioDTO.calificaion());
 
         Comentario comentarioGuardado = comentarioRepo.save(comentario);
 
@@ -54,24 +60,28 @@ public class ComentarioServicioImp implements ComentarioServicio {
 
     @Override
     public void responderComentario(ResponderComDTO responderComDTO) throws Exception {
-        Optional<Cliente> clienteOptional = comentarioRepo.findByCodigoCliente(responderComDTO.codigoCliente());
+        Optional<Cliente> clienteOptional = clienteRepo.findById(responderComDTO.codigoCliente());
 
         if (clienteOptional.isEmpty()){
             throw new Exception("El cliente no esta registrado");
         }
-        Optional<Negocio> negocioOptional = comentarioRepo.findByCodigoNegocio(responderComDTO.codigoNegocio());
+        Negocio negocioOptional = negocioRepo.findByCodigoNegocio(responderComDTO.codigoNegocio());
 
-        if (negocioOptional.isEmpty()){
+        if (negocioOptional==null){
             throw new Exception("El cliente no esta registrado");
         }
 
+        Comentario comentario = comentarioRepo.findByCodigoComentario(responderComDTO.codigoComentario());
+        if (comentario==null){
+            throw new Exception("El comentario no existe");
+        }
 
-        Comentario comentario = new Comentario();
-        comentario.setFecha(LocalDateTime.now().toLocalDate());
-        comentario.setCodigoCliente(responderComDTO.codigoCliente());
-        comentario.setCodigoComentario(responderComDTO.codigoComentario());
-        comentario.setCodigoNegocio(responderComDTO.codigoNegocio());
-        comentario.setRespuesta(responderComDTO.respuesta());
+        //comentario.setFecha(LocalDateTime.now().toLocalDate());
+        //comentario.setCodigoCliente(responderComDTO.codigoCliente());
+        //comentario.setCodigoComentario(responderComDTO.codigoComentario());
+        //comentario.setCodigoNegocio(responderComDTO.codigoNegocio());
+        comentario.setRespuesta("Timestamp:"+LocalDateTime.now().toLocalDate()+";Cliente con id: "+responderComDTO.codigoCliente() +
+                " Responde:\n"+ responderComDTO.respuesta());
 
         Comentario respuestaGuardada  = comentarioRepo.save(comentario);
 

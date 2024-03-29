@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Transactional
 @Service
@@ -30,36 +29,23 @@ public class NegocioServivioImp implements NegocioServicio {
             throw new Exception("El email ya esta en uso por otra persona");
         }
 
-        if(existeCodigoCliente(crearNegocioDTO.codigoPropietario())){
-            throw new Exception("El nickname ya ests en uso por otra persona ");
-        }
+        Negocio negocio = new Negocio();
 
-       
-            Negocio negocio = new Negocio();
-            negocio.setCodigoNegocio(crearNegocioDTO.codigoNegocio());
-            negocio.setCodigoCliente(crearNegocioDTO.codigoPropietario());
-            negocio.setNombre(crearNegocioDTO.nombre());
-            negocio.setDescripcion(crearNegocioDTO.descripcion());
-            negocio.setHorario(crearNegocioDTO.horario());
-            negocio.setTipoNegocio(crearNegocioDTO.tipoNegocios());
-            negocio.setImagen(crearNegocioDTO.imagen());
-            negocio.setUbicacion(crearNegocioDTO.ubicacion());
-            negocio.setTelefono(crearNegocioDTO.telefono());
-            negocio.setEstadoRegistros(EstadoRegistro.ACTIVO);
+        negocio.setCodigoNegocio(crearNegocioDTO.codigoNegocio());
+        negocio.setCodigoCliente(crearNegocioDTO.codigoPropietario());
+        negocio.setNombre(crearNegocioDTO.nombre());
+        negocio.setDescripcion(crearNegocioDTO.descripcion());
+        negocio.setHorario(crearNegocioDTO.horario());
+        negocio.setTipoNegocio(crearNegocioDTO.tipoNegocios());
+        negocio.setImagen(crearNegocioDTO.imagen());
+        negocio.setUbicacion(crearNegocioDTO.ubicacion());
+        negocio.setTelefono(crearNegocioDTO.telefono());
+        negocio.setEstadoRegistros(EstadoRegistro.ACTIVO);
 
-            Negocio negocioGuardado = negocioRepo.save(negocio);
+        Negocio negocioGuardado = negocioRepo.save(negocio);
 
-            return negocioGuardado.getCodigoNegocio();
-        }
-
-    private boolean existeCodigoCliente(String s) {
-        Negocio negocio = negocioRepo.findByCodigoCliente(s);
-        return negocio!=null;
+        return negocioGuardado.getCodigoNegocio();
     }
-     
-
- 
-
 
     private Boolean existeNegocio(String codigo){
         Negocio negocio = negocioRepo.findByCodigoNegocio(codigo);
@@ -98,14 +84,8 @@ public class NegocioServivioImp implements NegocioServicio {
     @Override
     public void eliminarNegocio(String idNegocio) throws Exception {
 
-        Negocio negocioOptional = negocioRepo.findById(idNegocio);
-
-        if (negocioOptional==null) {
-            throw new Exception("No se encontró el negocio a eliminar");
-        }
-
-        Negocio negocio = negocioOptional.get();
-
+        Negocio negocio = negocioRepo.findByCodigoNegocio(idNegocio);
+        System.out.println(negocio);
         negocio.setEstadoRegistros(EstadoRegistro.INACTIVO);
 
         negocioRepo.save(negocio);
@@ -152,8 +132,6 @@ public class NegocioServivioImp implements NegocioServicio {
 
         return negocios;
     }
-
-
 
     @Override
     public List<Negocio> filtrarPorEstado(EstadoRegistro estado) throws Exception{

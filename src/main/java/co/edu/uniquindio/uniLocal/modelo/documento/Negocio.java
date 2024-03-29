@@ -6,6 +6,7 @@ import co.edu.uniquindio.uniLocal.modelo.entidades.Ubicacion;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.modelo.enums.TipoNegocio;
 import lombok.*;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -20,6 +21,7 @@ import java.util.List;
 public class Negocio implements Serializable {
 
     private Ubicacion ubicacion;
+    @Id
     private String codigoNegocio;
     private String codigoCliente;
     private String nombre;
@@ -27,7 +29,7 @@ public class Negocio implements Serializable {
     private List <Horario> horario;
     private List <String> imagen;
     private EstadoRegistro estadoRegistros;
-    private List <HistoriaRevicion> historiaRevicions;
+    private List<HistoriaRevicion> historiaRevicions;
     private TipoNegocio tipoNegocio;
     private List <String> telefono;
 }
