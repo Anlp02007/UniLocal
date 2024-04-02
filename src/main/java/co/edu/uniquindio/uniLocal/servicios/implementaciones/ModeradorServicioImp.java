@@ -3,22 +3,30 @@ package co.edu.uniquindio.uniLocal.servicios.implementaciones;
 import co.edu.uniquindio.uniLocal.dto.*;
 import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.documento.Moderador;
+import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
+import co.edu.uniquindio.uniLocal.modelo.entidades.HistoriaRevicion;
+import co.edu.uniquindio.uniLocal.modelo.enums.EstadoNegocio;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.repositorios.ModeradorRepo;
+import co.edu.uniquindio.uniLocal.repositorios.NegocioRepo;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ModeradorServicio;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Transactional
 @Service
-
+@RequiredArgsConstructor
 public class ModeradorServicioImp implements ModeradorServicio {
 
-    private ModeradorRepo moderadorRepo;
+    private final ModeradorRepo moderadorRepo;
 
+    private final NegocioRepo negocioRepo;
     @Override
     public void iniciarSesion(SesionDTO sesionDTO) throws Exception {
 
@@ -106,6 +114,24 @@ public class ModeradorServicioImp implements ModeradorServicio {
                         moderador.getCodigoModerador(),
                         moderador.getNombre())
         ).toList();
+    }
+
+
+    public HistoriaRevicion revisionNegocio(ItemNegocioDTO itemNegocioDTO, HistoriaRevicion historiaRevicion) throws Exception{
+        Negocio negocioOptional = negocioRepo.findByCodigoNegocio(itemNegocioDTO.codigoNegocio());
+
+        if (negocioOptional==null){
+            throw new Exception("El cliente no esta registrado");
+        }
+        if(negocioOptional.getHistoriaRevicions()==null){
+            negocioOptional.setHistoriaRevicions(new ArrayList<>());
+            negocioOptional.getHistoriaRevicions().add(historiaRevicion);
+        }else{
+            negocioOptional.getHistoriaRevicions().add(historiaRevicion);
+        }
+
+        negocioRepo.save(negocioOptional);
+        return historiaRevicion;
     }
 
 }

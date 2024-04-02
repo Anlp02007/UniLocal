@@ -1,7 +1,9 @@
 package co.edu.uniquindio.uniLocal.repositorios;
 
+import co.edu.uniquindio.uniLocal.dto.ItemNegocioDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.documento.Moderador;
+import co.edu.uniquindio.uniLocal.modelo.entidades.HistoriaRevicion;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;

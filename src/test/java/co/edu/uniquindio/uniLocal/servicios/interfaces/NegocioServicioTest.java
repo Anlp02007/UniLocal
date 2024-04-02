@@ -6,6 +6,7 @@ import co.edu.uniquindio.uniLocal.dto.ItemNegocioDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Horario;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Ubicacion;
+import co.edu.uniquindio.uniLocal.modelo.enums.EstadoNegocio;
 import co.edu.uniquindio.uniLocal.modelo.enums.TipoNegocio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
@@ -137,7 +139,7 @@ public class NegocioServicioTest {
     @Test
     void buscarNegocioUbicacionSuccess() throws Exception{
         Ubicacion u = new Ubicacion(0,-40);
-        ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(
+        ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(null,
                 null,u,null,null,null,null,null,null);
         List<Negocio> newgocio = negocioServicio.buscarNegocios(itemNegocioDTO);
         Assertions.assertEquals(newgocio.get(0).getCodigoNegocio(),"_negocio1");
@@ -148,7 +150,7 @@ public class NegocioServicioTest {
     @Test
     void buscarNegocioTipoNegocioSuccess() throws Exception{
 
-        ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(
+        ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(null,
                 null,null,null,null,null,TipoNegocio.CAFETERIA,null,null);
         List<Negocio> newgocio = negocioServicio.buscarNegocios(itemNegocioDTO);
         Assertions.assertEquals(newgocio.size(),3);
@@ -158,7 +160,7 @@ public class NegocioServicioTest {
     void buscarNegocioNombreSuccess() throws Exception{
 
         ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(
-                "negocio2",null,null,null,null,null,null,null);
+                null,"negocio2",null,null,null,null,null,null,null);
         List<Negocio> newgocio = negocioServicio.buscarNegocios(itemNegocioDTO);
         Assertions.assertEquals(newgocio.get(0).getCodigoNegocio(),"_negocio2");
         Assertions.assertEquals(newgocio.size(),1);
@@ -167,8 +169,9 @@ public class NegocioServicioTest {
     @Test
     void buscarNegocioNombreUbicacionSuccess() throws Exception{
         Ubicacion u = new Ubicacion(0,-40);
-        ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(
-                "negocio2",u,null,null,null,null,null,null);
+        ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(null,
+                "negocio2",u,null,null,null,
+                null,null,null);
         List<Negocio> newgocio = negocioServicio.buscarNegocios(itemNegocioDTO);
         Assertions.assertEquals(newgocio.get(0).getCodigoNegocio(),"_negocio2");
         Assertions.assertEquals(newgocio.size(),1);
@@ -177,7 +180,7 @@ public class NegocioServicioTest {
     @Test
     void buscarNegocioNombreTipoNegocioSuccess() throws Exception{
 
-        ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(
+        ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(null,
                 "negocio1",null,null,null,null,TipoNegocio.CAFETERIA,null,null);
         List<Negocio> newgocio = negocioServicio.buscarNegocios(itemNegocioDTO);
         Assertions.assertEquals(newgocio.get(0).getCodigoNegocio(),"_negocio4");
@@ -187,7 +190,7 @@ public class NegocioServicioTest {
     @Test
     void buscarNegocioTipoNegocioUbicacionSuccess() throws Exception{
         Ubicacion u = new Ubicacion(0,-40);
-        ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(
+        ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(null,
                 null,u,null,null,null,TipoNegocio.CAFETERIA,null,null);
         List<Negocio> newgocio = negocioServicio.buscarNegocios(itemNegocioDTO);
         Assertions.assertEquals(newgocio.get(0).getCodigoNegocio(),"_negocio1");
@@ -197,13 +200,24 @@ public class NegocioServicioTest {
     @Test
     void buscarNegocioTipoNegocioNombreUbicacionSuccess() throws Exception{
         Ubicacion u = new Ubicacion(0,-40);
-        ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO("negocio2",u,null,null,null,TipoNegocio.CAFETERIA,null,null);
+        ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(null,
+                "negocio2",u,null,null,null,
+                TipoNegocio.CAFETERIA,null,null);
         List<Negocio> newgocio = negocioServicio.buscarNegocios(itemNegocioDTO);
         Assertions.assertEquals(newgocio.get(0).getCodigoNegocio(),"_negocio2");
         Assertions.assertEquals(newgocio.size(),1);
 
     }
-
-
+/*
+    @Test
+    void buscarListaNegocioPorEstado() throws Exception{
+        List<Negocio> negocios = negocioServicio.filtrarPorEstado(EstadoNegocio.APROBADO);
+        assertEquals(2,negocios.size());
+        System.out.println(negocios.get(0).getCodigoNegocio());
+        System.out.println(negocios.get(1).getCodigoNegocio());
+        assertEquals("_negocio1",negocios.get(0).getCodigoNegocio());
+        assertEquals("_negocio2",negocios.get(1).getCodigoNegocio());
+    }
+ */
 
 }

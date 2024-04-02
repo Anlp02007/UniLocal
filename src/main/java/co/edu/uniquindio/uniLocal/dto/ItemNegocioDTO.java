@@ -9,6 +9,7 @@ import java.util.List;
 
 public record ItemNegocioDTO(
 
+        String codigoNegocio,
         String nombre,
         Ubicacion ubicacion,
         List<Horario> horario,
