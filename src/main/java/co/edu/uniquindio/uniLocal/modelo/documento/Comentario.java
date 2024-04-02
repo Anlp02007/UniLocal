@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Document
 @Setter
@@ -21,6 +22,5 @@ public class Comentario implements Serializable {
     private String codigoComentario;
     private String codigoNegocio;
     private String mensaje;
-    private String respuesta; // un comentario puede tener multiples respuestas, por lo cual este debera de ser una lista, ademas de como se puede saber quien hizo la respuesta
-    // toca crear un objeto para la respuesta, y asi guardar los datos de quien responde el comentario y este puede tener multiples respuestas por lo cual deberia de ser una lista
+    private List<String> respuesta;
 }

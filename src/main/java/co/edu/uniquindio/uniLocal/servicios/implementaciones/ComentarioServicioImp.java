@@ -80,8 +80,8 @@ public class ComentarioServicioImp implements ComentarioServicio {
         //comentario.setCodigoCliente(responderComDTO.codigoCliente());
         //comentario.setCodigoComentario(responderComDTO.codigoComentario());
         //comentario.setCodigoNegocio(responderComDTO.codigoNegocio());
-        comentario.setRespuesta("Timestamp:"+LocalDateTime.now().toLocalDate()+";Cliente con id: "+responderComDTO.codigoCliente() +
-                " Responde:\n"+ responderComDTO.respuesta());
+        //comentario.setRespuesta("Timestamp:"+LocalDateTime.now().toLocalDate()+";Cliente con id: "+responderComDTO.codigoCliente() +
+        //" Responde:\n"+ responderComDTO.respuesta());
 
         Comentario respuestaGuardada  = comentarioRepo.save(comentario);
 

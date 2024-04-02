@@ -16,7 +16,7 @@ public class ClienteServicioTest {
     private ClienteServicio clienteServicio;
 
     @Test
-    public void registrarTest() throws Exception {
+    void registrarTest() throws Exception {
 //Se crea un objeto de tipo RegistroClienteDTO
         RegistroClienteDTO registroClienteDTO = new RegistroClienteDTO(
                 "Juan",
@@ -33,7 +33,7 @@ public class ClienteServicioTest {
     }
 
     @Test
-    public void editarPerfilSuccess() throws Exception{
+    void editarPerfilSuccess() throws Exception{
 
         ActualizarClienteDTO registroClienteDTO = new ActualizarClienteDTO(
                 "6605d5bd79d2d70e68caeded",
