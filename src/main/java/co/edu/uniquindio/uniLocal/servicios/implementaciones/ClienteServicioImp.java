@@ -5,8 +5,8 @@ import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ClienteServicio;
-import jakarta.websocket.ClientEndpointConfig;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +37,10 @@ public class ClienteServicioImp implements ClienteServicio {
         cliente.setPassword(registroClienteDTO.password());
         cliente.setCiudad(registroClienteDTO.ciudadResidencia());
         cliente.setEstadoRegistro(EstadoRegistro.ACTIVO);
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String passwordEncriptada = passwordEncoder.encode( registroClienteDTO.password() );
+        cliente.setPassword( passwordEncriptada );
 
         Cliente clienteGuardado = clienteRepo.save(cliente);
 

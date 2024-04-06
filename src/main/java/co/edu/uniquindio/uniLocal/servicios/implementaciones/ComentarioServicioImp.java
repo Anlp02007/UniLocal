@@ -1,6 +1,7 @@
 package co.edu.uniquindio.uniLocal.servicios.implementaciones;
 
 import co.edu.uniquindio.uniLocal.dto.ComentarioDTO;
+import co.edu.uniquindio.uniLocal.dto.ListaComentariosDTO;
 import co.edu.uniquindio.uniLocal.dto.ResponderComDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.documento.Comentario;
@@ -77,10 +78,10 @@ public class ComentarioServicioImp implements ComentarioServicio {
             throw new Exception("El comentario no existe");
         }
 
-        //comentario.setFecha(LocalDateTime.now().toLocalDate());
-        //comentario.setCodigoCliente(responderComDTO.codigoCliente());
-        //comentario.setCodigoComentario(responderComDTO.codigoComentario());
-        //comentario.setCodigoNegocio(responderComDTO.codigoNegocio());
+        comentario.setFecha(LocalDateTime.now().toLocalDate());
+        comentario.setCodigoCliente(responderComDTO.codigoCliente());
+        comentario.setCodigoComentario(responderComDTO.codigoComentario());
+        comentario.setCodigoNegocio(responderComDTO.codigoNegocio());
         comentario.getRespuesta().add("Timestamp:"+LocalDateTime.now().toLocalDate()+";Cliente con id: "+responderComDTO.codigoCliente() +
                 " Responde:\n"+ responderComDTO.respuesta());
 
@@ -97,7 +98,15 @@ public class ComentarioServicioImp implements ComentarioServicio {
     @Override
     public void listarComentariosNegocio(String codigoNegocio) {
 
-      //  List<Comentario>obtenerComentario = comentarioRepo.obternerComentario(codigoNegocio);
+    /* List<Comentario>obtenerComenario = comentarioRepo.findAllByCodigoNegocio(codigoNegocio);
+
+       if (obtenerComenario.isEmpty()){
+           obtenerComenario.stream().map(comentario ->
+               new ListaComentariosDTO(
+                       comentario.getCodigoComentario(),
+                       comentario.getFecha()
+               ))
+       }*/
 
 
 
