@@ -1,5 +1,6 @@
 package co.edu.uniquindio.uniLocal.controladores;
 
+import co.edu.uniquindio.uniLocal.dto.ImagenDTO;
 import co.edu.uniquindio.uniLocal.dto.MensajeDTO;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ImagenesServicio;
 import lombok.RequiredArgsConstructor;
@@ -9,10 +10,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
+
 @RestController
 @RequestMapping("/api/imagenes")
 @RequiredArgsConstructor
-
 public class ImagenesControlador {
     private final ImagenesServicio imagenesServicio;
 

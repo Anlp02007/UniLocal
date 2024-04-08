@@ -1,7 +1,6 @@
 package co.edu.uniquindio.uniLocal.servicios.implementaciones;
 
 import co.edu.uniquindio.uniLocal.dto.ComentarioDTO;
-import co.edu.uniquindio.uniLocal.dto.ListaComentariosDTO;
 import co.edu.uniquindio.uniLocal.dto.ResponderComDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.documento.Comentario;
@@ -11,14 +10,11 @@ import co.edu.uniquindio.uniLocal.repositorios.ComentarioRepo;
 import co.edu.uniquindio.uniLocal.repositorios.NegocioRepo;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ComentarioServicio;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -90,12 +86,16 @@ public class ComentarioServicioImp implements ComentarioServicio {
 
     }
 
+    @Override
+    public void listarComentarioNegocio(String codigoNegocio) {
+
+    }
+
     public boolean existeComentario(String codigoComentario){
         Comentario comentario = comentarioRepo.findByCodigoComentario(codigoComentario);
         return comentario!=null;
     }
 
-    @Override
     public void listarComentariosNegocio(String codigoNegocio) {
 
     /* List<Comentario>obtenerComenario = comentarioRepo.findAllByCodigoNegocio(codigoNegocio);

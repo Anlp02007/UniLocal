@@ -6,12 +6,14 @@ import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ClienteServicio;
 import lombok.RequiredArgsConstructor;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Transactional
 @Service
 @RequiredArgsConstructor
@@ -81,6 +83,36 @@ public class ClienteServicioImp implements ClienteServicio {
 
 
 
+    }
+
+    @Override
+    public DetalleClienteDTO getCliente(String codiString) throws Exception {
+        Optional<Cliente> cl = clienteRepo.findById(codiString);
+        return DetalleClienteDTO.builder()
+                .codigoCliente(cl.get().getCodigoCliente())
+                .ciudad(cl.get().getCiudad())
+                .nombre(cl.get().getNombre())
+                .nickname(cl.get().getNickname())
+                .fotoPerfil(cl.get().getFotoPerfil())
+                .email(cl.get().getEmail())
+                .build();
+    }
+
+    @Override
+    public List<ItemClienteDTO> findAllClients() throws Exception{
+        return clienteRepo.findAll()
+                .stream()
+                .map(ClienteServicioImp::convertClienteEntitytoDTO)
+                .collect(Collectors.toList());
+    }
+
+    private static ItemClienteDTO convertClienteEntitytoDTO(Cliente cliente){
+        return new ItemClienteDTO(
+                cliente.getCodigoCliente(),
+                cliente.getNombre(),
+                cliente.getFotoPerfil(),
+                cliente.getNickname(),
+                cliente.getCiudad());
     }
 
     @Override
