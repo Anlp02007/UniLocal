@@ -110,6 +110,8 @@ public class ClienteServicioImp implements ClienteServicio {
                 .collect(Collectors.toList());
     }
 
+
+
     private static ItemClienteDTO convertClienteEntitytoDTO(Cliente cliente){
         return new ItemClienteDTO(
                 cliente.getCodigoCliente(),
@@ -162,8 +164,6 @@ public class ClienteServicioImp implements ClienteServicio {
                 email
         ));
     }
-
-
 
     @Override
     public void cambiarPassword(CambioPasswordDTO cambioPasswordDTO) throws Exception {

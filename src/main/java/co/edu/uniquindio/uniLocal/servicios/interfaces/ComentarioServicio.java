@@ -1,8 +1,10 @@
 package co.edu.uniquindio.uniLocal.servicios.interfaces;
 
-import co.edu.uniquindio.uniLocal.dto.ComentarioDTO;
-import co.edu.uniquindio.uniLocal.dto.ListaComentariosDTO;
+import co.edu.uniquindio.uniLocal.dto.ComentarioDTO.ComentarioDTO;
+import co.edu.uniquindio.uniLocal.dto.ComentarioDTO.ComentarioDTOGet;
 import co.edu.uniquindio.uniLocal.dto.ResponderComDTO;
+
+import java.util.List;
 
 public interface ComentarioServicio {
 
@@ -10,7 +12,7 @@ public interface ComentarioServicio {
 
     void responderComentario(ResponderComDTO responderComDTO) throws Exception;
 
-    void listarComentarioNegocio(String codigoNegocio);
+    List<ComentarioDTOGet> listarComentariosNegocio(String codigoNegocio);
 
     float calcularPromedioCalificaciones(String codigoNegocio);
 }

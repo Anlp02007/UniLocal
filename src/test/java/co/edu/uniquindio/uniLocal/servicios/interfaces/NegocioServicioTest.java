@@ -1,12 +1,11 @@
 package co.edu.uniquindio.uniLocal.servicios.interfaces;
 
-import co.edu.uniquindio.uniLocal.dto.ActualizarNegocioDTO;
-import co.edu.uniquindio.uniLocal.dto.CrearNegocioDTO;
+import co.edu.uniquindio.uniLocal.dto.NegocioDTO.ActualizarNegocioDTO;
+import co.edu.uniquindio.uniLocal.dto.NegocioDTO.CrearNegocioDTO;
 import co.edu.uniquindio.uniLocal.dto.ItemNegocioDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Horario;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Ubicacion;
-import co.edu.uniquindio.uniLocal.modelo.enums.EstadoNegocio;
 import co.edu.uniquindio.uniLocal.modelo.enums.TipoNegocio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -3,6 +3,7 @@ package co.edu.uniquindio.uniLocal.modelo.documento;
 import co.edu.uniquindio.uniLocal.modelo.entidades.HistoriaRevicion;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Horario;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Ubicacion;
+import co.edu.uniquindio.uniLocal.modelo.enums.EstadoNegocio;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.modelo.enums.TipoNegocio;
 import lombok.*;
@@ -32,4 +33,5 @@ public class Negocio implements Serializable {
     private List<HistoriaRevicion> historiaRevicions;
     private TipoNegocio tipoNegocio;
     private List <String> telefono;
+    private EstadoNegocio estadoNegocio;
 }

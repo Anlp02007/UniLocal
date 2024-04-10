@@ -22,11 +22,14 @@ public interface ClienteRepo extends MongoRepository<Cliente, String> {
     @Query("{'nickname': ?0}")
     Cliente buscarPorNickname(String nickname);
 
+    @Query("{'_id' :  ?0}")
+    Cliente findyById(String codigoCLiente);
+
     @Query("{'estadoRegistro': ?0}")
     List<Cliente> findByEstado(EstadoRegistro estadoRegistro);
 
 
-    List<Cliente> findAllByCodigoCliente(String codigoCliente);
+    List<Cliente> findAllByCodigoCliente();
 
 
 }

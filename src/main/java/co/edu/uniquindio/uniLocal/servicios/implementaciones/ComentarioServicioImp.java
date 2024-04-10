@@ -1,6 +1,8 @@
 package co.edu.uniquindio.uniLocal.servicios.implementaciones;
 
-import co.edu.uniquindio.uniLocal.dto.ComentarioDTO;
+import co.edu.uniquindio.uniLocal.dto.ComentarioDTO.ComentarioDTO;
+import co.edu.uniquindio.uniLocal.dto.ComentarioDTO.ComentarioDTOGet;
+import co.edu.uniquindio.uniLocal.dto.EmailDTO;
 import co.edu.uniquindio.uniLocal.dto.ResponderComDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.documento.Comentario;
@@ -9,6 +11,7 @@ import co.edu.uniquindio.uniLocal.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal.repositorios.ComentarioRepo;
 import co.edu.uniquindio.uniLocal.repositorios.NegocioRepo;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ComentarioServicio;
+import co.edu.uniquindio.uniLocal.servicios.interfaces.EmailServicio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +32,8 @@ public class ComentarioServicioImp implements ComentarioServicio {
     private final ClienteRepo clienteRepo;
 
     private final NegocioRepo negocioRepo;
+
+    private final EmailServicio emailServicio;
 
     private LocalDate localDate;
 
@@ -54,6 +59,14 @@ public class ComentarioServicioImp implements ComentarioServicio {
         comentario.setMensaje(comentarioDTO.mensaje());
         comentario.setCalificacion(comentarioDTO.calificaion());
 
+        String email = clienteRepo.findyById(negocioOptional.getCodigoCliente()).getEmail();
+
+        emailServicio.enviarCorreo(new EmailDTO(
+                "Comentario",
+                comentario.getMensaje(),
+                email
+        ));
+
         Comentario comentarioGuardado = comentarioRepo.save(comentario);
 
     }
@@ -76,6 +89,8 @@ public class ComentarioServicioImp implements ComentarioServicio {
             throw new Exception("El comentario no existe");
         }
 
+        String email = clienteRepo.findyById(comentario.getCodigoCliente()).getEmail();
+
         comentario.setFecha(LocalDateTime.now().toLocalDate());
         comentario.setCodigoCliente(responderComDTO.codigoCliente());
         comentario.setCodigoComentario(responderComDTO.codigoComentario());
@@ -83,39 +98,45 @@ public class ComentarioServicioImp implements ComentarioServicio {
         comentario.getRespuesta().add("Timestamp:"+LocalDateTime.now().toLocalDate()+";Cliente con id: "+responderComDTO.codigoCliente() +
                 " Responde:\n"+ responderComDTO.respuesta());
 
+
+
+        emailServicio.enviarCorreo(new EmailDTO(
+                "Comentario",
+                ";Cliente con id: "+responderComDTO.codigoCliente() +
+                        " Responde:\n"+ responderComDTO.respuesta(),
+                email
+        ));
+
         Comentario respuestaGuardada  = comentarioRepo.save(comentario);
 
 
     }
-
-    @Override
-    public void listarComentarioNegocio(String codigoNegocio) {
-
-    }
-
     public boolean existeComentario(String codigoComentario){
         Comentario comentario = comentarioRepo.findByCodigoComentario(codigoComentario);
         return comentario!=null;
     }
 
-    public List<ComentarioDTO> listarComentariosNegocio(String codigoNegocio) {
+    public List<ComentarioDTOGet> listarComentariosNegocio(String codigoNegocio) {
 
-    List<Comentario> obtenerComenario = comentarioRepo.findAllByCodigoNegocio(codigoNegocio);
+    List<Comentario> listaComentarios = comentarioRepo.findAllByCodigoNegocio(codigoNegocio);
         /*List<Cliente> obtenerCliente = clienteRepo.findAllByCodigoCliente(obtenerComenario.get().getCodigoCliente());
          obtenerCliente.stream().map(cliente -> new ComentarioDTO(
                  cliente.getNombre()
                  cliente.getFotoPerfil()
          )).toList();*/
-       if (obtenerComenario.isEmpty()){
-          return obtenerComenario.stream().map(comentario ->
+
+       if (listaComentarios.isEmpty()){
+
+          return listaComentarios.stream().map(comentario ->
 
 
-               new ComentarioDTO(
-                       clienteRepo.findAllByCodigoCliente(comentario.getCodigoCliente()).get().getNombre(),
-                       clienteRepo.findAllByCodigoCliente(comentario.getCodigoCliente()).get().getFotoPerfil(),
+               new ComentarioDTOGet(
+                       clienteRepo.findyById(comentario.getCodigoCliente()).getNombre(),
+                       clienteRepo.findyById(comentario.getCodigoCliente()).getFotoPerfil(),
                        comentario.getFecha(),
                        comentario.getMensaje(),
                        comentario.getCalificacion()
+
                ) ).toList();
 
        }

@@ -14,7 +14,7 @@ public interface ClienteServicio extends CuentaServicio{
 
     List<ItemClienteDTO> findAllClients()throws Exception;
 
-     void enviarLinkRecuperacion(String email, EmailDTO emailDTO) throws Exception;
+     void enviarLinkRecuperacion(String email) throws Exception;
 
 
 }

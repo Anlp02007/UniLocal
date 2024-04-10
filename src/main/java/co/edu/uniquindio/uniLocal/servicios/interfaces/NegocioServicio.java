@@ -1,13 +1,12 @@
 package co.edu.uniquindio.uniLocal.servicios.interfaces;
 
-import co.edu.uniquindio.uniLocal.dto.ActualizarNegocioDTO;
-import co.edu.uniquindio.uniLocal.dto.CrearNegocioDTO;
+import co.edu.uniquindio.uniLocal.dto.HistorialRevisionDTO.HistorialRevisionDTO;
 import co.edu.uniquindio.uniLocal.dto.ItemNegocioDTO;
+import co.edu.uniquindio.uniLocal.dto.NegocioDTO.ActualizarNegocioDTO;
+import co.edu.uniquindio.uniLocal.dto.NegocioDTO.CrearNegocioDTO;
+import co.edu.uniquindio.uniLocal.dto.NegocioDTO.NegocioGetDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
-import co.edu.uniquindio.uniLocal.modelo.entidades.Ubicacion;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoNegocio;
-import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
-import co.edu.uniquindio.uniLocal.modelo.enums.TipoNegocio;
 
 import java.util.List;
 
@@ -20,18 +19,18 @@ public interface NegocioServicio {
 
     void actualizarNegocio(ActualizarNegocioDTO actualizarNegocioDTO) throws Exception;
 
-    Negocio buscarNegocioId(String idNegocio) throws Exception;
+    NegocioGetDTO buscarNegocioId(String idNegocio) throws Exception;
 
 
-    void eliminarNegocio(String idNegocio) throws Exception;
+    String eliminarNegocio(String idNegocio) throws Exception;
 
-     List<Negocio>buscarNegocios(ItemNegocioDTO itemNegocioDTO) throws Exception;
+    List<NegocioGetDTO>buscarNegocios(ItemNegocioDTO itemNegocioDTO) throws Exception;
 
      List<Negocio> filtrarPorEstado(EstadoNegocio estado) throws Exception;
 
     List<Negocio> listarNegociosPropietario(String codigoPropietario) throws Exception;
 
-    void cambiarEstado();
+    public void registrarRevision(HistorialRevisionDTO historialDTO) throws Exception;
 
-    void registrarRevision();
+
 }

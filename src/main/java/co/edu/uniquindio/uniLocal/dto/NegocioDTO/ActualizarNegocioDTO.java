@@ -1,4 +1,4 @@
-package co.edu.uniquindio.uniLocal.dto;
+package co.edu.uniquindio.uniLocal.dto.NegocioDTO;
 
 import co.edu.uniquindio.uniLocal.modelo.entidades.Horario;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Ubicacion;

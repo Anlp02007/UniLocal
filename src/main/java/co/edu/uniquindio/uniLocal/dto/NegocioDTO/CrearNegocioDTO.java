@@ -1,9 +1,7 @@
-package co.edu.uniquindio.uniLocal.dto;
+package co.edu.uniquindio.uniLocal.dto.NegocioDTO;
 
 import co.edu.uniquindio.uniLocal.modelo.entidades.Horario;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Ubicacion;
-import co.edu.uniquindio.uniLocal.modelo.enums.EstadoNegocio;
-import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.modelo.enums.TipoNegocio;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
