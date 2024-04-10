@@ -5,6 +5,7 @@ import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ClienteServicio;
+import co.edu.uniquindio.uniLocal.servicios.interfaces.EmailServicio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ClienteServicioImp implements ClienteServicio {
+   private final EmailServicio emailServicio ;
 
     private final ClienteRepo clienteRepo;
+
+
     @Override
     public String registrarse(RegistroClienteDTO registroClienteDTO) throws Exception {
 
@@ -148,16 +152,17 @@ public class ClienteServicioImp implements ClienteServicio {
 
         Optional<Cliente> cliente = clienteRepo.findByEmail(email);
 
-        if (cliente == null){
-
+        if (cliente.isEmpty()){
             throw  new Exception("El email dado no esta asociado a ningun cliente");
         }
-        enviarMensaje("Cambio de contraseña - Unilocal","Para cambiar su conttaseña acceda al link que esta acontiniacion:Link", email);
 
+        emailServicio.enviarCorreo(new EmailDTO(
+                "Recuperación de contraseña",
+                "Ingrese a la siguiente ruta para cambiar su contraseña: XXXXXX?id="+cliente.get().getCodigoCliente(),
+                email
+        ));
     }
 
-    private void enviarMensaje(String s, String s1, String email) {
-    }
 
 
     @Override

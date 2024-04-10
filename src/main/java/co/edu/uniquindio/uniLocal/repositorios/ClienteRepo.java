@@ -26,4 +26,7 @@ public interface ClienteRepo extends MongoRepository<Cliente, String> {
     List<Cliente> findByEstado(EstadoRegistro estadoRegistro);
 
 
+    List<Cliente> findAllByCodigoCliente(String codigoCliente);
+
+
 }

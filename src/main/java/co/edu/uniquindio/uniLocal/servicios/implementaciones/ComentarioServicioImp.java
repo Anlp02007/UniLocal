@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -96,21 +98,29 @@ public class ComentarioServicioImp implements ComentarioServicio {
         return comentario!=null;
     }
 
-    public void listarComentariosNegocio(String codigoNegocio) {
+    public List<ComentarioDTO> listarComentariosNegocio(String codigoNegocio) {
 
-    /* List<Comentario>obtenerComenario = comentarioRepo.findAllByCodigoNegocio(codigoNegocio);
-
+    List<Comentario> obtenerComenario = comentarioRepo.findAllByCodigoNegocio(codigoNegocio);
+        /*List<Cliente> obtenerCliente = clienteRepo.findAllByCodigoCliente(obtenerComenario.get().getCodigoCliente());
+         obtenerCliente.stream().map(cliente -> new ComentarioDTO(
+                 cliente.getNombre()
+                 cliente.getFotoPerfil()
+         )).toList();*/
        if (obtenerComenario.isEmpty()){
-           obtenerComenario.stream().map(comentario ->
-               new ListaComentariosDTO(
-                       comentario.getCodigoComentario(),
-                       comentario.getFecha()
-               ))
-       }*/
+          return obtenerComenario.stream().map(comentario ->
 
 
+               new ComentarioDTO(
+                       clienteRepo.findAllByCodigoCliente(comentario.getCodigoCliente()).get().getNombre(),
+                       clienteRepo.findAllByCodigoCliente(comentario.getCodigoCliente()).get().getFotoPerfil(),
+                       comentario.getFecha(),
+                       comentario.getMensaje(),
+                       comentario.getCalificacion()
+               ) ).toList();
 
+       }
 
+       return  new ArrayList<>();
 
     }
 
