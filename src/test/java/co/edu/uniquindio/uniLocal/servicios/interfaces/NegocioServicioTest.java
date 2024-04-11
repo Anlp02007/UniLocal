@@ -1,9 +1,9 @@
 package co.edu.uniquindio.uniLocal.servicios.interfaces;
 
+import co.edu.uniquindio.uniLocal.dto.ItemNegocioDTO;
 import co.edu.uniquindio.uniLocal.dto.NegocioDTO.ActualizarNegocioDTO;
 import co.edu.uniquindio.uniLocal.dto.NegocioDTO.CrearNegocioDTO;
-import co.edu.uniquindio.uniLocal.dto.ItemNegocioDTO;
-import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
+import co.edu.uniquindio.uniLocal.dto.NegocioDTO.NegocioGetDTO;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Horario;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Ubicacion;
 import co.edu.uniquindio.uniLocal.modelo.enums.TipoNegocio;
@@ -16,7 +16,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
@@ -140,10 +139,10 @@ public class NegocioServicioTest {
         Ubicacion u = new Ubicacion(0,-40);
         ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(null,
                 null,u,null,null,null,null,null,null);
-        List<Negocio> newgocio = negocioServicio.buscarNegocios(itemNegocioDTO);
-        Assertions.assertEquals(newgocio.get(0).getCodigoNegocio(),"_negocio1");
-        Assertions.assertEquals(newgocio.get(1).getCodigoNegocio(),"_negocio2");
-        Assertions.assertEquals(newgocio.size(),1);
+        List<NegocioGetDTO> negocios = negocioServicio.buscarNegocios(itemNegocioDTO,"Cliente1");
+        Assertions.assertEquals(negocios.get(0).codigoNegocio(),"_negocio1");
+        Assertions.assertEquals(negocios.get(1).codigoNegocio(),"_negocio2");
+        Assertions.assertEquals(negocios.size(),1);
     }
 
     @Test
@@ -151,8 +150,8 @@ public class NegocioServicioTest {
 
         ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(null,
                 null,null,null,null,null,TipoNegocio.CAFETERIA,null,null);
-        List<Negocio> newgocio = negocioServicio.buscarNegocios(itemNegocioDTO);
-        Assertions.assertEquals(newgocio.size(),3);
+        List<NegocioGetDTO> negocios = negocioServicio.buscarNegocios(itemNegocioDTO,"Cliente1");
+        Assertions.assertEquals(negocios.size(),3);
     }
 
     @Test
@@ -160,9 +159,9 @@ public class NegocioServicioTest {
 
         ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(
                 null,"negocio2",null,null,null,null,null,null,null);
-        List<Negocio> newgocio = negocioServicio.buscarNegocios(itemNegocioDTO);
-        Assertions.assertEquals(newgocio.get(0).getCodigoNegocio(),"_negocio2");
-        Assertions.assertEquals(newgocio.size(),1);
+        List<NegocioGetDTO> negocios = negocioServicio.buscarNegocios(itemNegocioDTO,"Cliente1");
+        Assertions.assertEquals(negocios.get(0).codigoNegocio(),"_negocio2");
+        Assertions.assertEquals(negocios.size(),1);
 
     }
     @Test
@@ -171,9 +170,9 @@ public class NegocioServicioTest {
         ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(null,
                 "negocio2",u,null,null,null,
                 null,null,null);
-        List<Negocio> newgocio = negocioServicio.buscarNegocios(itemNegocioDTO);
-        Assertions.assertEquals(newgocio.get(0).getCodigoNegocio(),"_negocio2");
-        Assertions.assertEquals(newgocio.size(),1);
+        List<NegocioGetDTO> negocios = negocioServicio.buscarNegocios(itemNegocioDTO,"Cliente1");
+        Assertions.assertEquals(negocios.get(0).codigoNegocio(),"_negocio2");
+        Assertions.assertEquals(negocios.size(),1);
 
     }
     @Test
@@ -181,9 +180,9 @@ public class NegocioServicioTest {
 
         ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(null,
                 "negocio1",null,null,null,null,TipoNegocio.CAFETERIA,null,null);
-        List<Negocio> newgocio = negocioServicio.buscarNegocios(itemNegocioDTO);
-        Assertions.assertEquals(newgocio.get(0).getCodigoNegocio(),"_negocio4");
-        Assertions.assertEquals(newgocio.size(),2);
+        List<NegocioGetDTO> negocios = negocioServicio.buscarNegocios(itemNegocioDTO,"Cliente1");
+        Assertions.assertEquals(negocios.get(0).codigoNegocio(),"_negocio4");
+        Assertions.assertEquals(negocios.size(),2);
 
     }
     @Test
@@ -191,9 +190,9 @@ public class NegocioServicioTest {
         Ubicacion u = new Ubicacion(0,-40);
         ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(null,
                 null,u,null,null,null,TipoNegocio.CAFETERIA,null,null);
-        List<Negocio> newgocio = negocioServicio.buscarNegocios(itemNegocioDTO);
-        Assertions.assertEquals(newgocio.get(0).getCodigoNegocio(),"_negocio1");
-        Assertions.assertEquals(newgocio.size(),2);
+        List<NegocioGetDTO> negocios = negocioServicio.buscarNegocios(itemNegocioDTO,"Cliente1");
+        Assertions.assertEquals(negocios.get(0).codigoNegocio(),"_negocio1");
+        Assertions.assertEquals(negocios.size(),2);
 
     }
     @Test
@@ -202,9 +201,9 @@ public class NegocioServicioTest {
         ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(null,
                 "negocio2",u,null,null,null,
                 TipoNegocio.CAFETERIA,null,null);
-        List<Negocio> newgocio = negocioServicio.buscarNegocios(itemNegocioDTO);
-        Assertions.assertEquals(newgocio.get(0).getCodigoNegocio(),"_negocio2");
-        Assertions.assertEquals(newgocio.size(),1);
+        List<NegocioGetDTO> negocios = negocioServicio.buscarNegocios(itemNegocioDTO,"Cliente1");
+        Assertions.assertEquals(negocios.get(0).codigoNegocio(),"_negocio2");
+        Assertions.assertEquals(negocios.size(),1);
 
     }
 /*

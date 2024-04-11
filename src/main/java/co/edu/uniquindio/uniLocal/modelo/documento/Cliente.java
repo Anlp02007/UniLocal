@@ -5,7 +5,8 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.Serializable;
+import java.util.List;
+
 @Document
 @Setter
 @Getter
@@ -20,5 +21,7 @@ public class Cliente extends Cuenta {
     private String fotoPerfil;
     private String nickname;
     private String ciudad;
+    private List<Negocio> favoritos;
+    private List<Negocio> recomendaciones;
 
 }

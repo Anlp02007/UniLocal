@@ -24,9 +24,9 @@ public interface NegocioServicio {
 
     String eliminarNegocio(String idNegocio) throws Exception;
 
-    List<NegocioGetDTO>buscarNegocios(ItemNegocioDTO itemNegocioDTO) throws Exception;
+    List<NegocioGetDTO> buscarNegocios(ItemNegocioDTO itemNegocioDTO,String idCliente) throws Exception;
 
-     List<Negocio> filtrarPorEstado(EstadoNegocio estado) throws Exception;
+    List<Negocio> filtrarPorEstado(EstadoNegocio estado) throws Exception;
 
     List<Negocio> listarNegociosPropietario(String codigoPropietario) throws Exception;
 

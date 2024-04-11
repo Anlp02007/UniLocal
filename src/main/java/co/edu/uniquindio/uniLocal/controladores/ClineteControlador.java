@@ -1,9 +1,11 @@
 package co.edu.uniquindio.uniLocal.controladores;
 
-import co.edu.uniquindio.uniLocal.dto.ActualizarClienteDTO;
+import co.edu.uniquindio.uniLocal.dto.ClienteDTO.ActualizarClienteDTO;
+import co.edu.uniquindio.uniLocal.dto.ClienteDTO.FavoritosClienteDTO;
 import co.edu.uniquindio.uniLocal.dto.DetalleClienteDTO;
-import co.edu.uniquindio.uniLocal.dto.ItemClienteDTO;
-import co.edu.uniquindio.uniLocal.dto.RegistroClienteDTO;
+import co.edu.uniquindio.uniLocal.dto.ClienteDTO.ItemClienteDTO;
+import co.edu.uniquindio.uniLocal.dto.ClienteDTO.RegistroClienteDTO;
+import co.edu.uniquindio.uniLocal.dto.NegocioDTO.NegocioGetDTO;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.AutenticacionServicio;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ClienteServicio;
 import lombok.RequiredArgsConstructor;
@@ -60,6 +62,24 @@ public class ClineteControlador {
     public ResponseEntity<String> listarCliente(){
         return ResponseEntity.ok("holis");
 
+    }
+
+    @PostMapping("/agregarFavoritos")
+    public ResponseEntity<String> guardarNegocioFavoritos(@RequestBody FavoritosClienteDTO favoritoDTO)throws Exception{
+        clienteServicio.agregarNegocioToFavoritos(favoritoDTO);
+        return ResponseEntity.ok().body("Se agrego el producto a favoritos");
+    }
+
+    @GetMapping("/listarFavoritos/{codigoCliente}")
+    public ResponseEntity<List<NegocioGetDTO>> listarFavoritos(@PathVariable String codigoCliente) throws Exception{
+        List <NegocioGetDTO> negocios = clienteServicio.listarFavoritos(codigoCliente);
+        return ResponseEntity.ok().body(negocios);
+    }
+
+    @DeleteMapping("/eliminarFavorito")
+    public ResponseEntity<String> eliminarFavoritos(@RequestBody FavoritosClienteDTO favoritosDTO) throws Exception{
+        String negocio = clienteServicio.eliminarNegocioFavoritos(favoritosDTO);
+        return ResponseEntity.ok().body(negocio);
     }
 
 }

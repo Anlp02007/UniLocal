@@ -6,12 +6,14 @@ import co.edu.uniquindio.uniLocal.dto.ItemNegocioDTO;
 import co.edu.uniquindio.uniLocal.dto.NegocioDTO.ActualizarNegocioDTO;
 import co.edu.uniquindio.uniLocal.dto.NegocioDTO.CrearNegocioDTO;
 import co.edu.uniquindio.uniLocal.dto.NegocioDTO.NegocioGetDTO;
+import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
 import co.edu.uniquindio.uniLocal.modelo.entidades.HistoriaRevicion;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Ubicacion;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoNegocio;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.modelo.enums.TipoNegocio;
+import co.edu.uniquindio.uniLocal.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal.repositorios.NegocioRepo;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ClienteServicio;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.EmailServicio;
@@ -31,6 +33,7 @@ public class NegocioServivioImp implements NegocioServicio {
     private final NegocioRepo negocioRepo;
     private final EmailServicio emailServicio;
     private final ClienteServicio clienteServicio;
+
     @Override
     public String crearNegocio(CrearNegocioDTO crearNegocioDTO) throws Exception {
         
@@ -112,7 +115,7 @@ public class NegocioServivioImp implements NegocioServicio {
 
 
     @Override
-    public List<NegocioGetDTO> buscarNegocios(ItemNegocioDTO itemNegocioDTO) throws Exception {
+    public List<NegocioGetDTO> buscarNegocios(ItemNegocioDTO itemNegocioDTO,String idCliente) throws Exception {
 
         List<Negocio> negocios = new ArrayList<>();
 
@@ -151,6 +154,10 @@ public class NegocioServivioImp implements NegocioServicio {
         if (negocios.isEmpty()) {
 
             throw new Exception("No hay negocios");
+        }
+
+        for (Negocio neg : negocios) {
+            clienteServicio.agregarNegocioToRecomendaciones(idCliente,neg);
         }
 
         return negocios.stream().map(this::convertirNegocioToNegocioDTO).toList();

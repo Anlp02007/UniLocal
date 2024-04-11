@@ -1,4 +1,4 @@
-package co.edu.uniquindio.uniLocal.dto;
+package co.edu.uniquindio.uniLocal.dto.ClienteDTO;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;

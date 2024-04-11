@@ -1,9 +1,16 @@
 package co.edu.uniquindio.uniLocal.servicios.implementaciones;
 
 import co.edu.uniquindio.uniLocal.dto.*;
+import co.edu.uniquindio.uniLocal.dto.ClienteDTO.ActualizarClienteDTO;
+import co.edu.uniquindio.uniLocal.dto.ClienteDTO.FavoritosClienteDTO;
+import co.edu.uniquindio.uniLocal.dto.ClienteDTO.ItemClienteDTO;
+import co.edu.uniquindio.uniLocal.dto.ClienteDTO.RegistroClienteDTO;
+import co.edu.uniquindio.uniLocal.dto.NegocioDTO.NegocioGetDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
+import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.repositorios.ClienteRepo;
+import co.edu.uniquindio.uniLocal.repositorios.NegocioRepo;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ClienteServicio;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.EmailServicio;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +29,8 @@ public class ClienteServicioImp implements ClienteServicio {
    private final EmailServicio emailServicio ;
 
     private final ClienteRepo clienteRepo;
+
+    private final NegocioRepo negocioRepo;
 
 
     @Override
@@ -231,5 +240,148 @@ public class ClienteServicioImp implements ClienteServicio {
                         cliente.getNickname(),
                         cliente.getCiudad())
         ).toList();
+    }
+
+    @Override
+    public void agregarNegocioToFavoritos(FavoritosClienteDTO favoritoDTO) throws Exception{
+
+        Cliente cliente = clienteRepo.findyById(favoritoDTO.codigoCliente());
+        Negocio negocio = negocioRepo.findByCodigoNegocio(favoritoDTO.codigoNegocio());
+
+        if(cliente == null)
+            throw new Exception("Este cliente no esta registrado");
+
+        if(negocio == null)
+            throw new Exception("Este negocio no esta registrado");
+
+        for (Negocio neg : cliente.getFavoritos()) {
+            if (neg.getCodigoNegocio().equalsIgnoreCase(favoritoDTO.codigoNegocio())) {
+                throw new Exception("Este negocio ya fue agregado");
+            }
+        }
+        cliente.getFavoritos().add(negocio);
+        clienteRepo.save(cliente);
+    }
+
+    @Override
+    public List<NegocioGetDTO> listarFavoritos(String idCliente) throws Exception{
+
+        Cliente cliente = clienteRepo.findyById(idCliente);
+
+        if(cliente == null)
+            throw new Exception("Este cliente no esta registrado");
+
+        if(cliente.getFavoritos().isEmpty())
+            throw new Exception("No tiene negocios en la lista de favoritos");
+
+        return (List<NegocioGetDTO>) cliente.getFavoritos().stream().map(negocio ->
+                new NegocioGetDTO(
+                        negocio.getCodigoNegocio(),
+                        negocio.getNombre(),
+                        negocio.getUbicacion(),
+                        negocio.getHorario(),
+                        negocio.getImagen(),
+                        negocio.getDescripcion(),
+                        negocio.getTipoNegocio(),
+                        negocio.getTelefono(),
+                        negocio.getEstadoRegistros()
+                )
+        ).toList();
+
+    }
+
+    @Override
+    public String eliminarNegocioFavoritos(FavoritosClienteDTO favoritosDTO) throws Exception {
+
+        Cliente cliente = clienteRepo.findyById(favoritosDTO.codigoCliente());
+        boolean eliminado = false;
+
+        if(cliente == null)
+            throw new Exception("Este cliente no esta registrado");
+
+        for (Negocio negocio : cliente.getFavoritos()) {
+            if (negocio.getCodigoNegocio().equalsIgnoreCase(favoritosDTO.codigoNegocio())) {
+                cliente.getFavoritos().remove(negocio);
+                eliminado = true;
+                break;
+            }
+        }
+
+        if(eliminado){
+            clienteRepo.save(cliente);
+            return favoritosDTO.codigoNegocio();
+        }
+
+        throw new Exception("El negocio no esta en la lista");
+    }
+
+
+    @Override
+    public void agregarNegocioToRecomendaciones(String idCliente, Negocio negocio) throws Exception{
+
+        Cliente cliente = clienteRepo.findyById(idCliente);
+
+        if(cliente == null)
+           return;
+
+        for (Negocio neg : cliente.getRecomendaciones()) {
+            if (neg.getCodigoNegocio().equalsIgnoreCase(negocio.getCodigoNegocio())) {
+                return;
+            }
+        }
+        cliente.getRecomendaciones().add(negocio);
+        clienteRepo.save(cliente);
+    }
+
+    @Override
+    public List<NegocioGetDTO> listarRecomendaciones(String idCliente) throws Exception{
+
+        Cliente cliente = clienteRepo.findyById(idCliente);
+
+        if(cliente == null)
+            throw new Exception("Este cliente no esta registrado");
+
+        if(cliente.getFavoritos().isEmpty())
+            throw new Exception("No tiene negocios en la lista de recomendaciones");
+
+        return (List<NegocioGetDTO>) cliente.getRecomendaciones().stream().map(negocio ->
+                new NegocioGetDTO(
+                        negocio.getCodigoNegocio(),
+                        negocio.getNombre(),
+                        negocio.getUbicacion(),
+                        negocio.getHorario(),
+                        negocio.getImagen(),
+                        negocio.getDescripcion(),
+                        negocio.getTipoNegocio(),
+                        negocio.getTelefono(),
+                        negocio.getEstadoRegistros()
+                )
+        ).toList();
+
+    }
+
+    @Override
+    public String eliminarNegocioRecomendaciones(String idCliente, Negocio negocio) throws Exception {
+
+        Cliente cliente = clienteRepo.findyById(idCliente);
+        boolean eliminado = false;
+
+        if(cliente == null)
+            throw new Exception("Este cliente no esta registrado");
+
+        for (Negocio neg : cliente.getRecomendaciones()) {
+            if (neg.getCodigoNegocio().equalsIgnoreCase(negocio.getCodigoNegocio())) {
+                cliente.getRecomendaciones().remove(neg);
+                eliminado = true;
+                break;
+            }
+        }
+
+        if(eliminado){
+            clienteRepo.save(cliente);
+            return negocio.getCodigoNegocio();
+        }
+
+        throw new Exception("El negocio no esta en la lista");
     }
 }

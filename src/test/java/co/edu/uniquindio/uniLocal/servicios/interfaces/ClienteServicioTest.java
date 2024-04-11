@@ -1,7 +1,7 @@
 package co.edu.uniquindio.uniLocal.servicios.interfaces;
 
-import co.edu.uniquindio.uniLocal.dto.ActualizarClienteDTO;
-import co.edu.uniquindio.uniLocal.dto.RegistroClienteDTO;
+import co.edu.uniquindio.uniLocal.dto.ClienteDTO.ActualizarClienteDTO;
+import co.edu.uniquindio.uniLocal.dto.ClienteDTO.RegistroClienteDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
