@@ -6,14 +6,13 @@ import co.edu.uniquindio.uniLocal.dto.ItemNegocioDTO;
 import co.edu.uniquindio.uniLocal.dto.NegocioDTO.ActualizarNegocioDTO;
 import co.edu.uniquindio.uniLocal.dto.NegocioDTO.CrearNegocioDTO;
 import co.edu.uniquindio.uniLocal.dto.NegocioDTO.NegocioGetDTO;
-import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
 import co.edu.uniquindio.uniLocal.modelo.entidades.HistoriaRevicion;
+import co.edu.uniquindio.uniLocal.modelo.entidades.Horario;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Ubicacion;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoNegocio;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.modelo.enums.TipoNegocio;
-import co.edu.uniquindio.uniLocal.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal.repositorios.NegocioRepo;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ClienteServicio;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.EmailServicio;
@@ -22,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -211,13 +211,16 @@ public class NegocioServivioImp implements NegocioServicio {
         ));
 
         negocio.setEstadoNegocio(historialDTO.estadoNegocio());
-        negocio.getHistoriaRevicions().add(historiaRevicion);
+        negocio.getHistorialRevicion().add(historiaRevicion);
         negocioRepo.save(negocio);
     }
 
     private NegocioGetDTO convertirNegocioToNegocioDTO(Negocio negocio){
 
+
+
        return  new NegocioGetDTO(
+
                negocio.getCodigoNegocio(),
                 negocio.getNombre(),
                negocio.getUbicacion(),
@@ -226,10 +229,26 @@ public class NegocioServivioImp implements NegocioServicio {
                 negocio.getDescripcion(),
                 negocio.getTipoNegocio(),
                 negocio.getTelefono(),
-               negocio.getEstadoRegistros()
-
+               negocio.getEstadoRegistros(),
+               verificarSiEstaAbierto(negocio.getHorario())
         );
     }
 
+    private boolean verificarSiEstaAbierto(List<Horario> horarios){
 
+        boolean abierto = false;
+
+        for (Horario horario: horarios){
+            int diaHorario = Integer.parseInt(horario.getDia());
+            LocalDate horaActual =  LocalDate.now();
+            if(diaHorario == horaActual.getDayOfWeek().getValue() ){
+               if( horaActual.isAfter(horario.getHoraInicio()) && horaActual.isBefore(horario.getHoraFin()))
+               {
+                   abierto = true;
+                   break;
+               }
+            }
+        }
+        return abierto;
+    }
 }

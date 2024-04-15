@@ -30,7 +30,7 @@ public class Negocio implements Serializable {
     private List <Horario> horario;
     private List <String> imagen;
     private EstadoRegistro estadoRegistros;
-    private List<HistoriaRevicion> historiaRevicions;
+    private List<HistoriaRevicion> historialRevicion;
     private TipoNegocio tipoNegocio;
     private List <String> telefono;
     private EstadoNegocio estadoNegocio;

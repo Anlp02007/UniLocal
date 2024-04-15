@@ -1,7 +1,6 @@
 package co.edu.uniquindio.uniLocal.servicios.implementaciones;
 
 import co.edu.uniquindio.uniLocal.dto.*;
-import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.documento.Moderador;
 import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
 import co.edu.uniquindio.uniLocal.modelo.entidades.HistoriaRevicion;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +31,8 @@ public class ModeradorServicioImp implements ModeradorServicio {
     public void iniciarSesion(SesionDTO sesionDTO) throws Exception {
 
         Moderador moderador = moderadorRepo.findByEmailAndPassword(sesionDTO.email(),sesionDTO.password());
+
+
 
         if (moderador == null){
 
@@ -123,15 +125,39 @@ public class ModeradorServicioImp implements ModeradorServicio {
         if (negocioOptional==null){
             throw new Exception("El cliente no esta registrado");
         }
-        if(negocioOptional.getHistoriaRevicions()==null){
-            negocioOptional.setHistoriaRevicions(new ArrayList<>());
-            negocioOptional.getHistoriaRevicions().add(historiaRevicion);
+        if(negocioOptional.getHistorialRevicion()==null){
+            negocioOptional.setHistorialRevicion(new ArrayList<>());
+            negocioOptional.getHistorialRevicion().add(historiaRevicion);
         }else{
-            negocioOptional.getHistoriaRevicions().add(historiaRevicion);
+            negocioOptional.getHistorialRevicion().add(historiaRevicion);
         }
 
         negocioRepo.save(negocioOptional);
         return historiaRevicion;
+    }
+
+
+    public void inactivarNegocios() {
+
+        List<Negocio> negocios = negocioRepo.findAll();
+
+        for (Negocio negocio: negocios){
+
+            if(negocio.getEstadoNegocio() == EstadoNegocio.RECHAZADO){
+
+                List<HistoriaRevicion> historiales = negocio.getHistorialRevicion();
+                HistoriaRevicion historial = historiales.get(historiales.size() - 1);
+                LocalDate fecha = historial.getFecha();
+                if(ChronoUnit.DAYS.between(fecha, LocalDate.now()) >= 5) {
+                    Negocio negocioAModificar = negocio;
+                    negocioAModificar.setEstadoRegistros(EstadoRegistro.INACTIVO);
+                    negocioRepo.save(negocioAModificar);
+                }
+            }
+
+
+        }
+
     }
 
 }

@@ -5,6 +5,7 @@ import co.edu.uniquindio.uniLocal.dto.TokenDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.AutenticacionServicio;
+import co.edu.uniquindio.uniLocal.servicios.interfaces.ModeradorServicio;
 import co.edu.uniquindio.uniLocal.utils.JWTUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,8 +24,13 @@ public class AutenticacionServicioImp implements AutenticacionServicio {
 
     private final ClienteRepo clienteRepo;
     private final JWTUtils jwtUtils;
+    private final ModeradorServicio moderadorServicio;
     @Override
     public TokenDTO iniciarSesionCliente(LoginDTO loginDTO) throws Exception  {
+
+
+        moderadorServicio.inactivarNegocios();
+
         Optional<Cliente> clienteOptional = clienteRepo.findByEmail(loginDTO.email());
         if (clienteOptional.isEmpty()) {
             throw new Exception("El correo no se encuentra registrado");
@@ -46,5 +52,6 @@ public class AutenticacionServicioImp implements AutenticacionServicio {
         //tokendes.forEach((key, value) -> System.out.println("Clave: " + key + ", Valor: " + value));
         return ClienteDTO.equals(tokendes.get("id"));
     }
+
 }
 

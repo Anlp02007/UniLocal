@@ -17,6 +17,7 @@ public record NegocioGetDTO(
         String descripcion,
         TipoNegocio tipoNegocio,
         List<String> telefono,
-        EstadoRegistro estadoRegistro
+        EstadoRegistro estadoRegistro,
+        boolean estaAbierto
 ) {
 }

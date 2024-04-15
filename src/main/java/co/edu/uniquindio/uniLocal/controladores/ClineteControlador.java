@@ -63,19 +63,16 @@ public class ClineteControlador {
         return ResponseEntity.ok("holis");
 
     }
-
     @PostMapping("/agregarFavoritos")
     public ResponseEntity<String> guardarNegocioFavoritos(@RequestBody FavoritosClienteDTO favoritoDTO)throws Exception{
         clienteServicio.agregarNegocioToFavoritos(favoritoDTO);
         return ResponseEntity.ok().body("Se agrego el producto a favoritos");
     }
-
     @GetMapping("/listarFavoritos/{codigoCliente}")
     public ResponseEntity<List<NegocioGetDTO>> listarFavoritos(@PathVariable String codigoCliente) throws Exception{
         List <NegocioGetDTO> negocios = clienteServicio.listarFavoritos(codigoCliente);
         return ResponseEntity.ok().body(negocios);
     }
-
     @DeleteMapping("/eliminarFavorito")
     public ResponseEntity<String> eliminarFavoritos(@RequestBody FavoritosClienteDTO favoritosDTO) throws Exception{
         String negocio = clienteServicio.eliminarNegocioFavoritos(favoritosDTO);

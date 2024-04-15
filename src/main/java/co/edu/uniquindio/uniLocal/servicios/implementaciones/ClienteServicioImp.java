@@ -133,6 +133,8 @@ public class ClienteServicioImp implements ClienteServicio {
     @Override
     public void iniciarSesion(SesionDTO sesionDTO) throws Exception {
 
+
+
         Cliente cliente = clienteRepo.findByEmailAndPassword(sesionDTO.email(),sesionDTO.password());
 
         if (cliente == null){
