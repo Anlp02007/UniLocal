@@ -77,10 +77,10 @@ db.negocios.insertMany([
         ],
         historialRevicion: [
             {
-                fecha: '2024/04/15',
-                descripcion : 'Bla bla bla bla',
-                estado : 'RECHAZADO',
-                codigoModerador: '1'
+                fecha: new Date(),
+                descripcion : 'cumple',
+                estado : 'APROVADO',
+                codigoModerador: 'Moderador1'
             }
         ],
 
@@ -103,6 +103,14 @@ db.negocios.insertMany([
                 dia: 'LUNES',
                 horaInicio: '18:00',
                 horaFin: '23:00'
+            }
+        ],
+        historialRevicion: [
+            {
+                fecha: new Date(),
+                descripcion : 'cumple con los requeriminetos ',
+                estado : 'APROVADO',
+                codigoModerador: 'Moderador1'
             }
         ],
         telefonos: ['3231578565', '7321345'],
@@ -128,6 +136,15 @@ db.negocios.insertMany([
                 horaFin: '16:00'
             }
         ],
+        historialRevicion: [
+            {
+                fecha: new Date(),
+                descripcion : ' no cumple con los requerimientos  ',
+                estado : 'RECHAZADO',
+                codigoModerador: 'Moderador1'
+            }
+        ],
+
         telefonos: ['310493', '201799'],
         estado: 'ACTIVO',
         _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Negocio'
@@ -150,6 +167,14 @@ db.negocios.insertMany([
                 horaFin: '22:00'
             }
         ],
+        historialRevicion: [
+            {
+                fecha: new Date(),
+                descripcion : ' su nombre se encuentra repetido ',
+                estado : 'RECHAZADO',
+                codigoModerador: 'Moderador1'
+            }
+        ],
         telefonos: ['3456789', '7462525'],
         estado: 'ACTIVO',
         _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Negocio'
@@ -170,6 +195,14 @@ db.negocios.insertMany([
                 dia: 'LUNES',
                 horaInicio: '07:00',
                 horaFin: '07:00'
+            }
+        ],
+        historialRevicion: [
+            {
+                fecha: new Date(),
+                descripcion : ' no se describe bien las carateristicas del tipo d enegocio  ',
+                estado : 'RECHAZADO',
+                codigoModerador: 'Moderador1'
             }
         ],
         telefonos: ['321564789', '7654451'],
@@ -219,3 +252,51 @@ db.comentarios.insertMany([
         _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Comentario'
     }
 ]);
+db.moderador.insertMany([
+    {
+        _id:'Moderador 1',
+        nombre:'Julian',
+        password:'mipassword',
+        email:'Jul@gmail.com',
+        estadoRegistro:'ACTIVO',
+
+    }
+]);
+db.pedido.insertMany([
+    {
+      _id:'Pedido1',
+        codigoCliente:'Cliente1',
+        codigoNegocio:'Ngocio1',
+        fechaPedido:new Date(),
+        descripcion:'desos ordenar dos burritos de pollo barrio fundadores'
+    },
+    {
+        _id:'Pedido2',
+        codigoCliente:'Cliente2',
+        codigoNegocio:'Ngocio2',
+        fechaPedido:new Date(),
+        descripcion:'desos ordenar una pizza familar de queso barrio los naranjos  '
+    },
+    {
+        _id:'Pedido3',
+        codigoCliente:'Cliente3',
+        codigoNegocio:'Ngocio1',
+        fechaPedido:new Date(),
+        descripcion:'Un combo de tacoz con carne y pollo barrio las acacias '
+    },
+    {
+        _id:'Pedido4',
+        codigoCliente:'Cliente4',
+        codigoNegocio:'Ngocio2',
+        fechaPedido:new Date(),
+        descripcion:'pizza familiar mitad de carnes y mitad de pollo barrio la union'
+    },
+    {
+        _id:'Pedido5',
+        codigoCliente:'Cliente5',
+        codigoNegocio:'Ngocio1',
+        fechaPedido:new Date(),
+        descripcion:'Un combo de nachos mas dos burritos de pollo con 3 tacoz de carbe ,la union '
+    }
+
+])
