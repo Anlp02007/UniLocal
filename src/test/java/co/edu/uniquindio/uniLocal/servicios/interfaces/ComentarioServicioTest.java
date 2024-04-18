@@ -24,7 +24,6 @@ public class ComentarioServicioTest {
                 LocalDate.now(),
                 "1",
                 "Negocio1",
-                "_comentario1",
                 "Excelente la cafeteria",
                 5);
 

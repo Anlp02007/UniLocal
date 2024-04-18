@@ -7,7 +7,6 @@ import java.time.LocalDate;
 
 public record PedidoDTO(
 
-        @NotBlank String codigoPedido,
         LocalDate fecha,
         @NotBlank @Length(max = 100) String descripcion,
         @NotBlank String codigoCliente,

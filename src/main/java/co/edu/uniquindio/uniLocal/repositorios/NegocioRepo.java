@@ -19,7 +19,7 @@ public interface NegocioRepo extends MongoRepository<Negocio,String> {
     Negocio findByNombre(String nombre);
     @Query("{'tipoNegocio': ?0}")
     List<Negocio>listarPorTipoNegocio(TipoNegocio tipoNegocio);
-    @Query("{'codigoPropietario': ?0}")
+    @Query("{'codigoCliente': ?0}")
     List<Negocio>listarPorPropietarioNegocio(String codigoPropietario);
 
     @Query("{'tipoNegocio': ?0, 'nombre': ?1, 'ubicacion': ?2}")

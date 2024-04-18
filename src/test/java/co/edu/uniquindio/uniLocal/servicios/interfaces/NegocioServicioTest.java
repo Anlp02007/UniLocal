@@ -35,7 +35,7 @@ public class NegocioServicioTest {
         imagen.add("imagen2");
         List<String> telefono = new ArrayList<>();
         CrearNegocioDTO crearNegocioDTO = new CrearNegocioDTO(
-             "Negocio 6",
+
              "negocio 6",
              "este es el negocio 6",
              "660090d7d150c72ed3fbaa54",
@@ -59,7 +59,7 @@ public class NegocioServicioTest {
         List<String> imagen = new ArrayList<>();
         List<String> telefono = new ArrayList<>();
         CrearNegocioDTO crearNegocioDTO = new CrearNegocioDTO(
-                "Negocio4",
+
                 "negocio 4",
                 "este es el negocio 4",
                 "660090d7d150c72ed3fbaa54",

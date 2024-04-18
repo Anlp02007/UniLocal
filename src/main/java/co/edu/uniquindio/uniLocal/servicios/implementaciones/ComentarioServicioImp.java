@@ -56,7 +56,7 @@ public class ComentarioServicioImp implements ComentarioServicio {
         //comentario.setCodigoComentario(comentarioDTO.codigoComentario());
         comentario.setCodigoNegocio(comentarioDTO.codigoNegocio());
         comentario.setMensaje(comentarioDTO.mensaje());
-        comentario.setCalificacion(comentarioDTO.calificaion());
+        comentario.setCalificacion(comentarioDTO.calificacion());
 
         String email = clienteRepo.findyById(negocioOptional.getCodigoCliente()).getEmail();
 
@@ -137,8 +137,8 @@ public class ComentarioServicioImp implements ComentarioServicio {
                        clienteRepo.findyById(comentario.getCodigoCliente()).getFotoPerfil(),
                        comentario.getFecha(),
                        comentario.getMensaje(),
-                       comentario.getCalificacion()
-
+                       comentario.getCalificacion(),
+                       comentario.getRespuesta()
                ) ).toList();
 
        }

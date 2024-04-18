@@ -10,6 +10,7 @@ import co.edu.uniquindio.uniLocal.modelo.entidades.Ubicacion;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoNegocio;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.modelo.enums.TipoNegocio;
+import co.edu.uniquindio.uniLocal.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal.repositorios.NegocioRepo;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ClienteServicio;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.EmailServicio;
@@ -29,6 +30,7 @@ import java.util.List;
 public class NegocioServivioImp implements NegocioServicio {
 
     private final NegocioRepo negocioRepo;
+    private final ClienteRepo clienteRepo;
     private final EmailServicio emailServicio;
     private final ClienteServicio clienteServicio;
 
@@ -183,12 +185,7 @@ public class NegocioServivioImp implements NegocioServicio {
         return negocios;
     }
 
-    @Override
-    public List<Negocio> listarNegociosPropietario(String codigoPropietario) throws Exception {
-        List<Negocio> negocios = negocioRepo.listarPorPropietarioNegocio(codigoPropietario);
-        return negocios;
 
-    }
 
 
 
@@ -230,5 +227,16 @@ public class NegocioServivioImp implements NegocioServicio {
             }
         }
         return abierto;
+    }
+
+    public List<NegocioGetDTO> listarNegociosPorCliente(String codigo) throws Exception{
+
+        if(clienteRepo.findyById(codigo) == null)
+            throw new Exception("Este cliente no esta registrado");
+
+        List<Negocio> negocios = negocioRepo.listarPorPropietarioNegocio(codigo);
+
+
+        return negocios.stream().map(this::convertirNegocioToNegocioDTO).toList();
     }
 }

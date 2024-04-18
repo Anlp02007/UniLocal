@@ -55,5 +55,11 @@ public class NegocioController {
         return ResponseEntity.ok().body(listaNegocios);
     }
 
+    @GetMapping("/listarNegociosPorCliente/{codigoCliente}")
+    public ResponseEntity<List<NegocioGetDTO>> listarNegociosPorCliente(@PathVariable String codigoCliente) throws Exception {
+        List<NegocioGetDTO> negocio = negocioServicio.listarNegociosPorCliente(codigoCliente);
+        return ResponseEntity.ok().body(negocio);
+    }
+
 
 }

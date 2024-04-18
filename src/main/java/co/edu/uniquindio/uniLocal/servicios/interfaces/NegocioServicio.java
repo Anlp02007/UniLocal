@@ -28,10 +28,10 @@ public interface NegocioServicio {
 
     List<Negocio> filtrarPorEstado(EstadoNegocio estado) throws Exception;
 
-    List<Negocio> listarNegociosPropietario(String codigoPropietario) throws Exception;
-
    // public void registrarRevision(HistorialRevisionDTO historialDTO) throws Exception;
     boolean verificarSiEstaAbierto(List<Horario> horarios);
+
+    List<NegocioGetDTO> listarNegociosPorCliente(String codigo) throws Exception;
 
 
 }

@@ -40,6 +40,7 @@ public class PedidoServicioImp implements PedidoServicio {
     public  List<PedidoDTOGet> obtenerPedidoPorCliente(String idCLiente) throws Exception{
 
         List<Pedido> listaPedidos = pedidoRepo.listarPorClientes(idCLiente);
+        System.out.println(listaPedidos);
 
         if(listaPedidos.isEmpty())
             throw new Exception("No hay pedidos por este cliente");
@@ -48,7 +49,7 @@ public class PedidoServicioImp implements PedidoServicio {
                 new PedidoDTOGet(
                         pedido.getFechaPedido(),
                         pedido.getDescripcion(),
-                        clienteRepo.findyById(pedido.getCodigoClinete()).getNombre(),
+                        clienteRepo.findyById(pedido.getCodigoCliente()).getNombre(),
                         negocioRepo.findByCodigoNegocio(pedido.getCodigoNegocio()).getNombre()
 
         )).toList();
@@ -66,7 +67,7 @@ public class PedidoServicioImp implements PedidoServicio {
                 new PedidoDTOGet(
                         pedido.getFechaPedido(),
                         pedido.getDescripcion(),
-                        clienteRepo.findyById(pedido.getCodigoClinete()).getNombre(),
+                        clienteRepo.findyById(pedido.getCodigoCliente()).getNombre(),
                         negocioRepo.findByCodigoNegocio(pedido.getCodigoNegocio()).getNombre()
 
                 )).toList();
@@ -74,13 +75,13 @@ public class PedidoServicioImp implements PedidoServicio {
 
    private Pedido converitirPedidoDtoToPedido(PedidoDTO pedidoDTO){
 
-        return new Pedido(
-                pedidoDTO.codigoPedido(),
-                pedidoDTO.codigoCliente(),
-                pedidoDTO.codigoNegocio(),
-                pedidoDTO.fecha(),
-                pedidoDTO.descripcion()
-        );
+        Pedido pedido = new Pedido();
+        pedido.setCodigoCliente(pedidoDTO.codigoCliente());
+        pedido.setCodigoNegocio(pedidoDTO.codigoNegocio());
+        pedido.setFechaPedido(pedidoDTO.fecha());
+        pedido.setDescripcion(pedidoDTO.descripcion());
+
+        return pedido;
 
     }
 

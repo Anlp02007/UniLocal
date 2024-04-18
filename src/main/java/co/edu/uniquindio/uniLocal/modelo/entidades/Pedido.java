@@ -1,6 +1,7 @@
 package co.edu.uniquindio.uniLocal.modelo.entidades;
 
 import lombok.*;
+import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -13,8 +14,10 @@ import java.time.LocalDate;
 
 public class Pedido implements Serializable {
 
+    @Id
     private String codigoPedido;
-    private String codigoClinete;
+
+    private String codigoCliente;
     private String codigoNegocio;
     private LocalDate fechaPedido;
     private String descripcion;
