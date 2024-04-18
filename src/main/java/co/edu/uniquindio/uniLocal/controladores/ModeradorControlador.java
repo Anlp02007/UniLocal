@@ -17,7 +17,7 @@ import java.util.List;
 public class ModeradorControlador {
 
 
-    ModeradorServicio moderadorServicio;
+    private final ModeradorServicio moderadorServicio;
 
 
 
@@ -33,7 +33,7 @@ public class ModeradorControlador {
         return ResponseEntity.ok().body("Se eliminó la cuenta correctamente");
     }
 
-    @PostMapping("/editarPerfil")
+    @PutMapping("/editarPerfil")
     public ResponseEntity<String> editarPerfil(@RequestBody ActualizarModeradorDTO actualizarModeradorDTO) throws Exception{
         moderadorServicio.editarPerfil(actualizarModeradorDTO);
         return ResponseEntity.ok().body("Se actualizo correctamente");

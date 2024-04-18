@@ -3,6 +3,7 @@ package co.edu.uniquindio.uniLocal.servicios.implementaciones;
 import co.edu.uniquindio.uniLocal.dto.ComentarioDTO.ComentarioDTO;
 import co.edu.uniquindio.uniLocal.dto.ComentarioDTO.ComentarioDTOGet;
 import co.edu.uniquindio.uniLocal.dto.ComentarioDTO.ResponderComDTO;
+import co.edu.uniquindio.uniLocal.dto.EmailDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.documento.Comentario;
 import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
@@ -60,11 +61,11 @@ public class ComentarioServicioImp implements ComentarioServicio {
 
         String email = clienteRepo.findyById(negocioOptional.getCodigoCliente()).getEmail();
 
-       /* emailServicio.enviarCorreo(new EmailDTO(
+        emailServicio.enviarCorreo(new EmailDTO(
                 "Comentario",
                 comentario.getMensaje(),
                 email
-        ));*/
+        ));
 
         Comentario comentarioGuardado = comentarioRepo.save(comentario);
 
@@ -102,12 +103,12 @@ public class ComentarioServicioImp implements ComentarioServicio {
 
 
 
-   /*     emailServicio.enviarCorreo(new EmailDTO(
+        emailServicio.enviarCorreo(new EmailDTO(
                 "Comentario",
                 ";Cliente con id: "+responderComDTO.codigoCliente() +
                         " Responde:\n"+ responderComDTO.respuesta(),
                 email
-        ));*/
+        ));
 
         Comentario respuestaGuardada  = comentarioRepo.save(comentario);
 

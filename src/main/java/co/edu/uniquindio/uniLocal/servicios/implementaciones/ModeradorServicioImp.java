@@ -92,7 +92,7 @@ public class ModeradorServicioImp implements ModeradorServicio {
         Optional<Moderador> moderadorOptional = moderadorRepo.findById(actualizarModeradorDTO.id());
 
         if (moderadorOptional.isEmpty()){
-            throw new Exception("Ecliente no esta registrado");
+            throw new Exception("El moderador no esta registrado");
 
         }
         Moderador moderador = moderadorOptional.get();
@@ -170,6 +170,10 @@ public class ModeradorServicioImp implements ModeradorServicio {
                 mensaje,
                 correoUsuario
         ));
+
+        if(negocio.getHistorialRevicion() == null){
+            negocio.setHistorialRevicion(new ArrayList<>());
+        }
 
         negocio.setEstadoNegocio(historialDTO.estadoNegocio());
         negocio.getHistorialRevicion().add(historiaRevicion);

@@ -47,6 +47,9 @@ public class AutenticacionServicioImp implements AutenticacionServicio {
         }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Cliente cliente = clienteOptional.get();
+        System.out.println("Login: " + loginDTO.password());
+        System.out.println("Moderador: " + cliente.getPassword());
+        System.out.println("Comparacion: " + passwordEncoder.matches(loginDTO.password(), cliente.getPassword()));
         if( !passwordEncoder.matches(loginDTO.password(), cliente.getPassword()) ) {
             throw new Exception("La contraseña es incorrecta");
         }
@@ -68,7 +71,10 @@ public class AutenticacionServicioImp implements AutenticacionServicio {
         }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Moderador moderador = moderadorOptional.get();
-        if( !passwordEncoder.matches(loginDTO.password(), moderador.getPassword()) ) {
+        System.out.println("Login: " + loginDTO.password());
+        System.out.println("Moderador: " + moderador.getPassword());
+        System.out.println("Comparacion: " + passwordEncoder.matches(loginDTO.password(), moderador.getPassword()));
+        if( !loginDTO.password().equals(moderador.getPassword()))  {
             throw new Exception("La contraseña es incorrecta");
         }
         Map<String, Object> map = new HashMap<>();

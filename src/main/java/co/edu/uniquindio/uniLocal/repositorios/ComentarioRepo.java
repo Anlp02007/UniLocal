@@ -20,7 +20,7 @@ public interface ComentarioRepo extends MongoRepository<Comentario, String> {
     @Query("{'codigoNegocio': ?0}")
     List<Comentario> findListComentarioByCodigoNegocio(String codigoNegocio);
 
-    @Aggregation({ "{ $match: { codigoNegocio: ?0 } }", "{ $group: { codigoNegocio: null, promedioPrecio: { $avg: '$calificacion' } } }" })
+    @Aggregation({ "{ $match: { codigoNegocio: ?0 } }", "{ $group: { _id: null, promedioPrecio: { $avg: '$calificacion' } } }" })
     float calcularPromedio(String idNegocio);
 
     List<Comentario> findAllByCodigoNegocio(String codigoNegocio);

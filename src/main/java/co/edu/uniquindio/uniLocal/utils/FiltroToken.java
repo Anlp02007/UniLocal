@@ -74,15 +74,22 @@ public class FiltroToken extends OncePerRequestFilter {
                     }
                 } else  if (requestURI.startsWith("/api/moderador")) {
 
-                    Jws<Claims> jws = jwtUtils.parseJwt(token);
-                    if (!jws.getPayload().get("rol").equals("MODERADOR")) {
+                    if(token != null) {
+                        Jws<Claims> jws = jwtUtils.parseJwt(token);
+                        if (!jws.getPayload().get("rol").equals("MODERADOR")) {
+                            crearRespuestaError("No tiene permisos para acceder a este recurso",
+
+                                    HttpServletResponse.SC_FORBIDDEN, response);
+
+                        } else {
+
+                            error = false;
+                        }
+                    } else{
+
                         crearRespuestaError("No tiene permisos para acceder a este recurso",
 
                                 HttpServletResponse.SC_FORBIDDEN, response);
-
-                    } else {
-
-                        error = false;
                     }
 
                 }
@@ -99,7 +106,7 @@ public class FiltroToken extends OncePerRequestFilter {
                         HttpServletResponse.SC_INTERNAL_SERVER_ERROR, response);
 
             } catch (Exception e) {
-                crearRespuestaError(e.getMessage() + "Holaaaa",
+                crearRespuestaError(e.getMessage(),
                         HttpServletResponse.SC_INTERNAL_SERVER_ERROR, response );
 
             }

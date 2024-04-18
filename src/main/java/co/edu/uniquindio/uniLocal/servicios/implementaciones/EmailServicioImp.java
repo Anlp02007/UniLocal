@@ -17,10 +17,13 @@ public class EmailServicioImp  implements EmailServicio {
     public void enviarCorreo(EmailDTO emailDTO) throws Exception {
         MimeMessage mensaje = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mensaje);
+
         helper.setSubject(emailDTO.asunto());
         helper.setText(emailDTO.cuerpo(), true);
         helper.setTo(emailDTO.destinatario());
         helper.setFrom("no_reply@dominio.com");
         javaMailSender.send(mensaje);
+
+        System.out.println("Llegue hasta aqui bla bla");
     }
 }
