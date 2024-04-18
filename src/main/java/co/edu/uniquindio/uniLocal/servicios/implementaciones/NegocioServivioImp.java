@@ -1,13 +1,10 @@
 package co.edu.uniquindio.uniLocal.servicios.implementaciones;
 
-import co.edu.uniquindio.uniLocal.dto.EmailDTO;
-import co.edu.uniquindio.uniLocal.dto.HistorialRevisionDTO.HistorialRevisionDTO;
 import co.edu.uniquindio.uniLocal.dto.ItemNegocioDTO;
 import co.edu.uniquindio.uniLocal.dto.NegocioDTO.ActualizarNegocioDTO;
 import co.edu.uniquindio.uniLocal.dto.NegocioDTO.CrearNegocioDTO;
 import co.edu.uniquindio.uniLocal.dto.NegocioDTO.NegocioGetDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
-import co.edu.uniquindio.uniLocal.modelo.entidades.HistoriaRevicion;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Horario;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Ubicacion;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoNegocio;
@@ -22,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,13 +35,14 @@ public class NegocioServivioImp implements NegocioServicio {
     @Override
     public String crearNegocio(CrearNegocioDTO crearNegocioDTO) throws Exception {
         
-        if(existeNegocio(crearNegocioDTO.codigoNegocio())){
-            throw new Exception("El email ya esta en uso por otra persona");
+        if(existeNegocio(crearNegocioDTO.nombre())){
+            throw new Exception("El negocio ya existe");
         }
-
         Negocio negocio = new Negocio();
 
-        negocio.setCodigoNegocio(crearNegocioDTO.codigoNegocio());
+
+
+        //negocio.setCodigoNegocio(crearNegocioDTO.codigoNegocio());
         negocio.setCodigoCliente(crearNegocioDTO.codigoPropietario());
         negocio.setNombre(crearNegocioDTO.nombre());
         negocio.setDescripcion(crearNegocioDTO.descripcion());
@@ -60,24 +59,31 @@ public class NegocioServivioImp implements NegocioServicio {
         return negocioGuardado.getCodigoNegocio();
     }
 
-    private Boolean existeNegocio(String codigo){
-        Negocio negocio = negocioRepo.findByCodigoNegocio(codigo);
+    private Boolean existeNegocioId(String id){
+        Negocio negocio = negocioRepo.findByCodigoNegocio(id);
+        return negocio!=null;
+    }
+
+    private Boolean existeNegocio(String nombre){
+        Negocio negocio = negocioRepo.findByNombre(nombre);
         return negocio!=null;
     }
 
     @Override
     public void actualizarNegocio(ActualizarNegocioDTO actualizarNegocioDTO) throws Exception {
 
-        if (!existeNegocio(actualizarNegocioDTO.id())) {
+        if (!existeNegocioId(actualizarNegocioDTO.id())) {
             throw new Exception("El negocio no está registrado");
         }
 
         Negocio negocio = negocioRepo.findByCodigoNegocio(actualizarNegocioDTO.id());
         negocio.setNombre(actualizarNegocioDTO.nombre());
+        negocio.setDescripcion(actualizarNegocioDTO.descripcion());
         negocio.setTelefono(actualizarNegocioDTO.telefono());
         negocio.setUbicacion(actualizarNegocioDTO.ubicacion());
         negocio.setImagen(actualizarNegocioDTO.imagen());
         negocio.setHorario(actualizarNegocioDTO.horario());
+        negocio.setEstadoNegocio(EstadoNegocio.PENDIENTE);
 
         negocioRepo.save(negocio);
 
@@ -89,7 +95,7 @@ public class NegocioServivioImp implements NegocioServicio {
 
         Negocio negocio = null;
 
-        if(!existeNegocio(idNegocio)){
+        if(!existeNegocioId(idNegocio)){
 
             throw new  Exception("El negocio no está registrado");
         }
@@ -156,8 +162,10 @@ public class NegocioServivioImp implements NegocioServicio {
             throw new Exception("No hay negocios");
         }
 
-        for (Negocio neg : negocios) {
-            clienteServicio.agregarNegocioToRecomendaciones(idCliente,neg);
+        if(!idCliente.isEmpty()) {
+            for (Negocio neg : negocios) {
+                clienteServicio.agregarNegocioToRecomendaciones(idCliente, neg.getCodigoNegocio());
+            }
         }
 
         return negocios.stream().map(this::convertirNegocioToNegocioDTO).toList();
@@ -182,38 +190,7 @@ public class NegocioServivioImp implements NegocioServicio {
 
     }
 
-    @Override
-    public void registrarRevision(HistorialRevisionDTO historialDTO) throws Exception{
 
-        Negocio negocio = negocioRepo.findByCodigoNegocio(historialDTO.codigoNegocio());
-        if(negocio == null){
-            throw new Exception("El negocio no existe");
-        }
-
-        HistoriaRevicion historiaRevicion = new HistoriaRevicion (
-                historialDTO.fecha(),
-                historialDTO.descripcion(),
-                historialDTO.estadoNegocio(),
-                historialDTO.codigoModerador()
-                );
-
-        String correoUsuario = clienteServicio.getCliente(negocio.getCodigoCliente()).email();
-
-        String mensaje = "El lugar fue " + historialDTO.estadoNegocio();
-        if(historialDTO.estadoNegocio() == EstadoNegocio.RECHAZADO ){
-            mensaje += " por el motivo de " + historialDTO.descripcion();
-        }
-
-        emailServicio.enviarCorreo(new EmailDTO(
-                "Revision de negocio",
-                mensaje,
-                correoUsuario
-        ));
-
-        negocio.setEstadoNegocio(historialDTO.estadoNegocio());
-        negocio.getHistorialRevicion().add(historiaRevicion);
-        negocioRepo.save(negocio);
-    }
 
     private NegocioGetDTO convertirNegocioToNegocioDTO(Negocio negocio){
 
@@ -234,14 +211,17 @@ public class NegocioServivioImp implements NegocioServicio {
         );
     }
 
-    private boolean verificarSiEstaAbierto(List<Horario> horarios){
+    public boolean verificarSiEstaAbierto(List<Horario> horarios){
 
         boolean abierto = false;
+        LocalDate fechaActual = LocalDate.now();
+        LocalTime horaActual = LocalTime.now();
+
+        int diaActual = fechaActual.getDayOfWeek().getValue();
 
         for (Horario horario: horarios){
             int diaHorario = Integer.parseInt(horario.getDia());
-            LocalDate horaActual =  LocalDate.now();
-            if(diaHorario == horaActual.getDayOfWeek().getValue() ){
+            if(diaHorario == diaActual){
                if( horaActual.isAfter(horario.getHoraInicio()) && horaActual.isBefore(horario.getHoraFin()))
                {
                    abierto = true;

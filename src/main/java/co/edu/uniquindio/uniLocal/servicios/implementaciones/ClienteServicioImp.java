@@ -1,23 +1,28 @@
 package co.edu.uniquindio.uniLocal.servicios.implementaciones;
 
-import co.edu.uniquindio.uniLocal.dto.*;
+import co.edu.uniquindio.uniLocal.dto.CambioPasswordDTO;
 import co.edu.uniquindio.uniLocal.dto.ClienteDTO.ActualizarClienteDTO;
 import co.edu.uniquindio.uniLocal.dto.ClienteDTO.FavoritosClienteDTO;
 import co.edu.uniquindio.uniLocal.dto.ClienteDTO.ItemClienteDTO;
-import co.edu.uniquindio.uniLocal.dto.ClienteDTO.RegistroClienteDTO;
+import co.edu.uniquindio.uniLocal.dto.DetalleClienteDTO;
+import co.edu.uniquindio.uniLocal.dto.EmailDTO;
 import co.edu.uniquindio.uniLocal.dto.NegocioDTO.NegocioGetDTO;
+import co.edu.uniquindio.uniLocal.dto.SesionDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
+import co.edu.uniquindio.uniLocal.modelo.entidades.Horario;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal.repositorios.NegocioRepo;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ClienteServicio;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.EmailServicio;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,36 +38,7 @@ public class ClienteServicioImp implements ClienteServicio {
     private final NegocioRepo negocioRepo;
 
 
-    @Override
-    public String registrarse(RegistroClienteDTO registroClienteDTO) throws Exception {
 
-        if(existeEmail(registroClienteDTO.email())){
-            throw new Exception("El email ya esta en uso por otra persona");
-        }
-
-        if(existeNickname(registroClienteDTO.nickname())){
-            throw new Exception("El nickname ya ests en uso por otra persona ");
-        }
-
-        Cliente cliente = new Cliente();
-        cliente.setNombre(registroClienteDTO.nombre());
-        cliente.setEmail(registroClienteDTO.email());
-        cliente.setFotoPerfil(registroClienteDTO.fotoPerfil());
-        cliente.setNickname(registroClienteDTO.nickname());
-        cliente.setPassword(registroClienteDTO.password());
-        cliente.setCiudad(registroClienteDTO.ciudadResidencia());
-        cliente.setEstadoRegistro(EstadoRegistro.ACTIVO);
-
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String passwordEncriptada = passwordEncoder.encode( registroClienteDTO.password() );
-        cliente.setPassword( passwordEncriptada );
-
-        Cliente clienteGuardado = clienteRepo.save(cliente);
-
-        return clienteGuardado.getCodigoCliente();
-
-
-    }
 
     private boolean existeNickname(String nickname) {
 
@@ -115,6 +91,7 @@ public class ClienteServicioImp implements ClienteServicio {
     public List<ItemClienteDTO> findAllClients() throws Exception{
         return clienteRepo.findAll()
                 .stream()
+                .filter(cliente -> EstadoRegistro.ACTIVO.equals(cliente.getEstadoRegistro()))
                 .map(ClienteServicioImp::convertClienteEntitytoDTO)
                 .collect(Collectors.toList());
     }
@@ -130,16 +107,9 @@ public class ClienteServicioImp implements ClienteServicio {
                 cliente.getCiudad());
     }
 
+
     @Override
     public void iniciarSesion(SesionDTO sesionDTO) throws Exception {
-
-
-
-        Cliente cliente = clienteRepo.findByEmailAndPassword(sesionDTO.email(),sesionDTO.password());
-
-        if (cliente == null){
-            throw new Exception("Cuenta invalida");
-        }
 
     }
 
@@ -256,6 +226,9 @@ public class ClienteServicioImp implements ClienteServicio {
         if(negocio == null)
             throw new Exception("Este negocio no esta registrado");
 
+        if(cliente.getFavoritos() == null)
+            cliente.setFavoritos(new ArrayList<>());
+
         for (Negocio neg : cliente.getFavoritos()) {
             if (neg.getCodigoNegocio().equalsIgnoreCase(favoritoDTO.codigoNegocio())) {
                 throw new Exception("Este negocio ya fue agregado");
@@ -277,6 +250,7 @@ public class ClienteServicioImp implements ClienteServicio {
             throw new Exception("No tiene negocios en la lista de favoritos");
 
         return (List<NegocioGetDTO>) cliente.getFavoritos().stream().map(negocio ->
+
                 new NegocioGetDTO(
                         negocio.getCodigoNegocio(),
                         negocio.getNombre(),
@@ -286,7 +260,8 @@ public class ClienteServicioImp implements ClienteServicio {
                         negocio.getDescripcion(),
                         negocio.getTipoNegocio(),
                         negocio.getTelefono(),
-                        negocio.getEstadoRegistros()
+                        negocio.getEstadoRegistros(),
+                        verificarSiEstaAbierto(negocio.getHorario())
                 )
         ).toList();
 
@@ -319,12 +294,18 @@ public class ClienteServicioImp implements ClienteServicio {
 
 
     @Override
-    public void agregarNegocioToRecomendaciones(String idCliente, Negocio negocio) throws Exception{
+    public void agregarNegocioToRecomendaciones(String idCliente, String idNegocio) throws Exception{
 
         Cliente cliente = clienteRepo.findyById(idCliente);
+        Negocio negocio = negocioRepo.findByCodigoNegocio(idNegocio);
 
         if(cliente == null)
            return;
+
+        if(cliente.getRecomendaciones() == null)
+            cliente.setRecomendaciones(new ArrayList<>());
+
+
 
         for (Negocio neg : cliente.getRecomendaciones()) {
             if (neg.getCodigoNegocio().equalsIgnoreCase(negocio.getCodigoNegocio())) {
@@ -343,7 +324,7 @@ public class ClienteServicioImp implements ClienteServicio {
         if(cliente == null)
             throw new Exception("Este cliente no esta registrado");
 
-        if(cliente.getFavoritos().isEmpty())
+        if(cliente.getRecomendaciones() == null || cliente.getRecomendaciones().isEmpty())
             throw new Exception("No tiene negocios en la lista de recomendaciones");
 
         return (List<NegocioGetDTO>) cliente.getRecomendaciones().stream().map(negocio ->
@@ -356,16 +337,18 @@ public class ClienteServicioImp implements ClienteServicio {
                         negocio.getDescripcion(),
                         negocio.getTipoNegocio(),
                         negocio.getTelefono(),
-                        negocio.getEstadoRegistros()
+                        negocio.getEstadoRegistros(),
+                        verificarSiEstaAbierto(negocio.getHorario())
                 )
         ).toList();
 
     }
 
     @Override
-    public String eliminarNegocioRecomendaciones(String idCliente, Negocio negocio) throws Exception {
+    public String eliminarNegocioRecomendaciones(String idCliente, String idNegocio) throws Exception {
 
         Cliente cliente = clienteRepo.findyById(idCliente);
+        Negocio negocio = negocioRepo.findByCodigoNegocio(idNegocio);
         boolean eliminado = false;
 
         if(cliente == null)
@@ -385,5 +368,24 @@ public class ClienteServicioImp implements ClienteServicio {
         }
 
         throw new Exception("El negocio no esta en la lista");
+    }
+
+    public boolean verificarSiEstaAbierto(List<Horario> horarios){
+
+        boolean abierto = false;
+        LocalTime horaActual = LocalTime.now();
+        int diaActual = LocalDate.now().getDayOfWeek().getValue();
+
+        for (Horario horario: horarios){
+            int diaHorario = Integer.parseInt(horario.getDia());
+            if(diaHorario == diaActual ){
+                if( horaActual.isAfter(horario.getHoraInicio()) && horaActual.isBefore(horario.getHoraFin()))
+                {
+                    abierto = true;
+                    break;
+                }
+            }
+        }
+        return abierto;
     }
 }

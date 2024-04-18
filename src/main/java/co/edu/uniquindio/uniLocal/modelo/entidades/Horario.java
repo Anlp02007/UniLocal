@@ -3,7 +3,7 @@ package co.edu.uniquindio.uniLocal.modelo.entidades;
 import lombok.*;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Setter
 @Getter
@@ -14,6 +14,6 @@ import java.time.LocalDate;
 public class Horario implements Serializable {
 
     private String dia;
-    private LocalDate horaInicio;
-    private LocalDate horaFin;
+    private LocalTime horaInicio;
+    private LocalTime horaFin;
 }

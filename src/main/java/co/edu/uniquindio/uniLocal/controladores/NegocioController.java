@@ -1,7 +1,6 @@
 package co.edu.uniquindio.uniLocal.controladores;
 
 
-import co.edu.uniquindio.uniLocal.dto.HistorialRevisionDTO.HistorialRevisionDTO;
 import co.edu.uniquindio.uniLocal.dto.ItemNegocioDTO;
 import co.edu.uniquindio.uniLocal.dto.NegocioDTO.ActualizarNegocioDTO;
 import co.edu.uniquindio.uniLocal.dto.NegocioDTO.CrearNegocioDTO;
@@ -46,15 +45,14 @@ public class NegocioController {
     }
 
     @PostMapping("/listarNegocios")
-    public ResponseEntity<List<NegocioGetDTO>> obtenerNegocios(@RequestBody ItemNegocioDTO itemNegocioDTO) throws Exception {
-        List<NegocioGetDTO> listaNegocios = negocioServicio.buscarNegocios(itemNegocioDTO);
+    public ResponseEntity<List<NegocioGetDTO>> obtenerNegociosSinId(@RequestBody ItemNegocioDTO itemNegocioDTO) throws Exception {
+        List<NegocioGetDTO> listaNegocios = negocioServicio.buscarNegocios(itemNegocioDTO,"");
         return ResponseEntity.ok().body(listaNegocios);
     }
-
-    @PostMapping("/hacerRevision")
-    public  ResponseEntity<String> hacerRevision(@RequestBody HistorialRevisionDTO historialRevisionDTO) throws Exception{
-        negocioServicio.registrarRevision(historialRevisionDTO);
-        return ResponseEntity.ok().body("Se hizo la revisión correctamente");
+    @PostMapping("/listarNegocios/{idCliente}")
+    public ResponseEntity<List<NegocioGetDTO>> obtenerNegocios(@RequestBody ItemNegocioDTO itemNegocioDTO, @PathVariable String idCliente) throws Exception {
+        List<NegocioGetDTO> listaNegocios = negocioServicio.buscarNegocios(itemNegocioDTO,idCliente);
+        return ResponseEntity.ok().body(listaNegocios);
     }
 
 

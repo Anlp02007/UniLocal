@@ -3,19 +3,20 @@ package co.edu.uniquindio.uniLocal.repositorios;
 import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Ubicacion;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoNegocio;
-import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.modelo.enums.TipoNegocio;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface NegocioRepo extends MongoRepository<Negocio,String> {
 
     @Query("{'codigoNegocio': ?0}")
     Negocio findByCodigoNegocio(String codigoNegocio);
+
+    @Query("{'nombre': ?0}")
+    Negocio findByNombre(String nombre);
     @Query("{'tipoNegocio': ?0}")
     List<Negocio>listarPorTipoNegocio(TipoNegocio tipoNegocio);
     @Query("{'codigoPropietario': ?0}")

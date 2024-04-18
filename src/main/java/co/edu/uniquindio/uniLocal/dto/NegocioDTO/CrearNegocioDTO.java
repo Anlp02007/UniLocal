@@ -10,7 +10,7 @@ import java.util.List;
 
 public record CrearNegocioDTO(
 
-        @NotBlank String codigoNegocio,
+       // @NotBlank String codigoNegocio,
         @Length(max = 100) String nombre,
         @NotBlank String descripcion,
         String codigoPropietario,

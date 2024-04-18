@@ -2,9 +2,8 @@ package co.edu.uniquindio.uniLocal.controladores;
 
 import co.edu.uniquindio.uniLocal.dto.ClienteDTO.ActualizarClienteDTO;
 import co.edu.uniquindio.uniLocal.dto.ClienteDTO.FavoritosClienteDTO;
-import co.edu.uniquindio.uniLocal.dto.DetalleClienteDTO;
 import co.edu.uniquindio.uniLocal.dto.ClienteDTO.ItemClienteDTO;
-import co.edu.uniquindio.uniLocal.dto.ClienteDTO.RegistroClienteDTO;
+import co.edu.uniquindio.uniLocal.dto.DetalleClienteDTO;
 import co.edu.uniquindio.uniLocal.dto.NegocioDTO.NegocioGetDTO;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.AutenticacionServicio;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ClienteServicio;
@@ -22,11 +21,7 @@ public class ClineteControlador {
     private final ClienteServicio clienteServicio;
     private final AutenticacionServicio autenticacionServicio;
 
-    @PostMapping("/registrar-cliente")
-    public ResponseEntity<String> registrarCliente(@RequestBody RegistroClienteDTO registroClienteDTO)throws Exception{
-        String cliente = clienteServicio.registrarse(registroClienteDTO);
-        return ResponseEntity.ok(cliente);
-    }
+
     @PutMapping("/actualizar-cliente")
     public ResponseEntity<Void> actualizarCliente(@RequestBody ActualizarClienteDTO actualizarClienteDTO, @RequestHeader Map<String,String>headers)throws Exception{
         String token = headers.get("authorization");
@@ -41,9 +36,9 @@ public class ClineteControlador {
         return ResponseEntity.status(401).build();
     }
     @DeleteMapping("/eliminar/{codigo}")
-    public ResponseEntity<Void> eliminarCuenta(@PathVariable String codigo)throws Exception{
+    public ResponseEntity<String> eliminarCuenta(@PathVariable String codigo)throws Exception{
         clienteServicio.eliminarCuenta(codigo);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("Se elimino correctamente");
     }
     @GetMapping("/obtener/{codigo}")
     public ResponseEntity<DetalleClienteDTO> obtenerCliente(@PathVariable String codigo) throws Exception{
@@ -53,16 +48,33 @@ public class ClineteControlador {
     }
     @GetMapping("/listar-todos")
     public ResponseEntity<List<ItemClienteDTO>> listarClientes()throws Exception{
+
+        System.out.println("Eyyyyy");
         List<ItemClienteDTO> list = clienteServicio.findAllClients();
         return ResponseEntity.ok().body(list);
 
     }
 
-    @GetMapping("/listar-todo")
-    public ResponseEntity<String> listarCliente(){
-        return ResponseEntity.ok("holis");
+    //falta
+    @GetMapping("/agregarRecomendacion/{codigoCliente}/{codigoNegocio}")
+    public ResponseEntity<String> guardarNegocioFavoritos(@PathVariable String codigoCliente, @PathVariable  String codigoNegocio )throws Exception{
 
+        clienteServicio.agregarNegocioToRecomendaciones(codigoCliente, codigoNegocio);
+        return ResponseEntity.ok().body("Se agrego el producto a recomendaciones");
     }
+    @GetMapping("/listarRecomendaciones/{codigoCliente}")
+    public ResponseEntity<List<NegocioGetDTO>> listarRecomendaciones(@PathVariable String codigoCliente) throws Exception{
+        List <NegocioGetDTO> negocios = clienteServicio.listarRecomendaciones(codigoCliente);
+        return ResponseEntity.ok().body(negocios);
+    }
+
+    //Falta
+    @DeleteMapping("/eliminarRecomendacion/{codigoCliente}/{codigoNegocio}")
+    public ResponseEntity<String> eliminarRecomendacion(@PathVariable String codigoCliente, @PathVariable String codigoNegocio) throws Exception{
+        String negocio = clienteServicio.eliminarNegocioRecomendaciones(codigoCliente, codigoNegocio);
+        return ResponseEntity.ok().body(negocio);
+    }
+
     @PostMapping("/agregarFavoritos")
     public ResponseEntity<String> guardarNegocioFavoritos(@RequestBody FavoritosClienteDTO favoritoDTO)throws Exception{
         clienteServicio.agregarNegocioToFavoritos(favoritoDTO);

@@ -14,7 +14,9 @@ public record ActualizarNegocioDTO(
         List<String> telefono,
         List<Horario> horario,
         List<String> imagen,
-        Ubicacion ubicacion
+        Ubicacion ubicacion,
+
+        String descripcion
 
 
 

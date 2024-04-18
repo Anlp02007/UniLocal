@@ -12,12 +12,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 
 import java.io.IOException;
 
 
+@Component
 @RequiredArgsConstructor
 public class FiltroToken extends OncePerRequestFilter {
 
@@ -25,6 +27,8 @@ public class FiltroToken extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+
+        System.out.println("Por aca");
         // Configuración de cabeceras para CORS
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -42,7 +46,15 @@ public class FiltroToken extends OncePerRequestFilter {
 
 
                 //Si la petición es para la ruta /api/clientes se verifica que el token seacorrecto y que el rol sea CLIENTE
-                if (requestURI.startsWith("/api/clientes")) {
+                if  (   requestURI.startsWith("/api/cliente")
+                        || requestURI.startsWith("/api/comentarios")
+                        || requestURI.startsWith("/api/negocio/crearNegocio")
+                        || requestURI.startsWith("/api/negocio/actualizarNegocio")
+                        || requestURI.startsWith("/api/negocio/eliminarNegocio")
+                        || requestURI.startsWith("/api/pedido")
+                ) {
+
+                    System.out.println("Hola a todos");
                     if (token != null) {
                         Jws<Claims> jws = jwtUtils.parseJwt(token);
                         if (!jws.getPayload().get("rol").equals("CLIENTE")) {
@@ -51,6 +63,7 @@ public class FiltroToken extends OncePerRequestFilter {
                                     HttpServletResponse.SC_FORBIDDEN, response);
 
                         } else {
+
                             error = false;
                         }
                     } else {
@@ -59,7 +72,21 @@ public class FiltroToken extends OncePerRequestFilter {
                                 HttpServletResponse.SC_FORBIDDEN, response);
 
                     }
-                } else {
+                } else  if (requestURI.startsWith("/api/moderador")) {
+
+                    Jws<Claims> jws = jwtUtils.parseJwt(token);
+                    if (!jws.getPayload().get("rol").equals("MODERADOR")) {
+                        crearRespuestaError("No tiene permisos para acceder a este recurso",
+
+                                HttpServletResponse.SC_FORBIDDEN, response);
+
+                    } else {
+
+                        error = false;
+                    }
+
+                }
+                else{
                     error = false;
                 }
             //Agregar más validaciones para otros roles y recursos (rutas de la API) aquí
@@ -72,12 +99,13 @@ public class FiltroToken extends OncePerRequestFilter {
                         HttpServletResponse.SC_INTERNAL_SERVER_ERROR, response);
 
             } catch (Exception e) {
-                crearRespuestaError(e.getMessage(),
-                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR, response);
+                crearRespuestaError(e.getMessage() + "Holaaaa",
+                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR, response );
 
             }
             if (!error) {
                 filterChain.doFilter(request, response);
+                System.out.println("Llegue hasta aqui");
             }
         }
     }

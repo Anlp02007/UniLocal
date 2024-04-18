@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(onlyExplicitlyIncluded = true)
 public class Comentario implements Serializable {
+
     private LocalDate fecha;
     private int calificacion; //esta calificacion es dada al comentario o dada al negocio al cual se le esta haciendo el comentario // como es dada esta clasificacion? en base a que jucios rangos?? cantidad de personas que lo pueden dar, etc
     private String codigoCliente;

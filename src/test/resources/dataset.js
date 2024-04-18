@@ -9,8 +9,75 @@ db.clientes.insertMany([
         password: 'mipassword',
         nombre: 'Juan',
         estado: 'ACTIVO',
-        _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Cliente'
+        _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Cliente',
+        favoritos:[
+            {
+                _id: 'Negocio2',
+                nombre: 'Viva la pizza',
+                descripcion: 'Restaurante de comida italiana en  Armenia',
+                codigoCliente: 'Cliente2',
+                ubicacion: {
+                    latitud: 45.321,
+                    longitud: +12.7894
+                },
+                imagenes: ['imagen3', 'imagen4'],
+                tipoNegocio: 'RESTAURANTE',
+                horarios: [
+                    {
+                        dia: 'LUNES',
+                        horaInicio: '18:00',
+                        horaFin: '23:00'
+                    }
+                ],
+                historialRevicion: [
+                    {
+                        fecha: new Date(),
+                        descripcion: 'cumple con los requeriminetos ',
+                        estado: 'APROVADO',
+                        codigoModerador: 'Moderador1'
+                    }
+                ],
+                telefonos: ['3231578565', '7321345'],
+                estado: 'ACTIVO',
+                _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Negocio'
+            }
+
+        ],
+        recomendaciones:[
+            {
+                _id: 'Negocio2',
+                nombre: 'Viva la pizza',
+                descripcion: 'Restaurante de comida italiana en  Armenia',
+                codigoCliente: 'Cliente2',
+                ubicacion: {
+                    latitud: 45.321,
+                    longitud: +12.7894
+                },
+                imagenes: ['imagen3', 'imagen4'],
+                tipoNegocio: 'RESTAURANTE',
+                horarios: [
+                    {
+                        dia: 'LUNES',
+                        horaInicio: '18:00',
+                        horaFin: '23:00'
+                    }
+                ],
+                historialRevicion: [
+                    {
+                        fecha: new Date(),
+                        descripcion: 'cumple con los requeriminetos ',
+                        estado: 'APROVADO',
+                        codigoModerador: 'Moderador1'
+                    }
+                ],
+                telefonos: ['3231578565', '7321345'],
+                estado: 'ACTIVO',
+                _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Negocio'
+
+            }
+        ]
     },
+
     {
         _id: 'Cliente2',
         nickname: 'maria',
@@ -20,7 +87,73 @@ db.clientes.insertMany([
         password: 'mipassword',
         nombre: 'Maria',
         estado: 'ACTIVO',
-        _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Cliente'
+        _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Cliente',
+        favoritos: [
+            {
+                _id: 'Negocio1',
+                nombre: 'Restaurante Mexicano',
+                descripcion: 'Restaurante de comida mexicana en Armenia',
+                codigoCliente: 'Cliente1',
+                ubicacion: {
+                    latitud: 5.540130,
+                    longitud: -65.665660
+                },
+                imagenes: ['imagen1', 'imagen2'],
+                tipoNegocio: 'RESTAURANTE',
+                horarios: [
+                    {
+                        dia: 'LUNES',
+                        horaInicio: '08:00',
+                        horaFin: '20:00'
+                    }
+                ],
+                historialRevicion: [
+                    {
+                        fecha: new Date(),
+                        descripcion : 'cumple',
+                        estado : 'APROVADO',
+                        codigoModerador: 'Moderador1'
+                    }
+                ],
+
+                telefonos: ['1234567', '7654321'],
+                estado: 'ACTIVO',
+                _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Negocio'
+            }
+        ],
+        recomendaciones: [
+            {
+                _id: 'Negocio1',
+                nombre: 'Restaurante Mexicano',
+                descripcion: 'Restaurante de comida mexicana en Armenia',
+                codigoCliente: 'Cliente1',
+                ubicacion: {
+                    latitud: 5.540130,
+                    longitud: -65.665660
+                },
+                imagenes: ['imagen1', 'imagen2'],
+                tipoNegocio: 'RESTAURANTE',
+                horarios: [
+                    {
+                        dia: 'LUNES',
+                        horaInicio: '08:00',
+                        horaFin: '20:00'
+                    }
+                ],
+                historialRevicion: [
+                    {
+                        fecha: new Date(),
+                        descripcion : 'cumple',
+                        estado : 'APROVADO',
+                        codigoModerador: 'Moderador1'
+                    }
+                ],
+
+                telefonos: ['1234567', '7654321'],
+                estado: 'ACTIVO',
+                _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Negocio'
+            }
+        ]
     },
     {
         _id: 'Cliente3',
@@ -31,7 +164,40 @@ db.clientes.insertMany([
         password: 'mipassword',
         nombre: 'Pedro',
         estado: 'ACTIVO',
-        _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Cliente'
+        _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Cliente',
+        favoritos: [
+            {
+                _id: 'Negocio3',
+                nombre: 'Museo Civil',
+                descripcion: 'Museo de la historia civil Armenia ',
+                codigoCliente: 'Cliente3',
+                ubicacion: {
+                    latitud: 5.540130,
+                    longitud: -75.665660
+                },
+                imagenes: ['imagen1', 'imagen2'],
+                tipoNegocio: 'MUSEO',
+                horarios: [
+                    {
+                        dia: 'LUNES',
+                        horaInicio: '08:00',
+                        horaFin: '16:00'
+                    }
+                ],
+                historialRevicion: [
+                    {
+                        fecha: new Date(),
+                        descripcion : ' no cumple con los requerimientos  ',
+                        estado : 'RECHAZADO',
+                        codigoModerador: 'Moderador1'
+                    }
+                ],
+
+                telefonos: ['310493', '201799'],
+                estado: 'ACTIVO',
+                _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Negocio'
+            }
+        ]
     },
     {   _id: 'Cliente4',
         nickname: 'lulu',
@@ -41,7 +207,72 @@ db.clientes.insertMany([
         password: 'mipassword',
         nombre: 'Luisa',
         estado: 'ACTIVO',
-        _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Cliente'
+        _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Cliente',
+        favoritos: [
+            {
+                _id: 'Negocio4',
+                nombre: 'Cafeteria Sebas',
+                descripcion: 'Cafeteria del norte de armenia',
+                codigoCliente: 'Cliente1',
+                ubicacion: {
+                    latitud: 3.1234,
+                    longitud: 5.7654
+                },
+                imagenes: ['imagen1', 'imagen2'],
+                tipoNegocio: 'CAFETERIA',
+                horarios: [
+                    {
+                        dia: '1',
+                        horaInicio: '14:00',
+                        horaFin: '22:00'
+                    }
+                ],
+                historialRevicion: [
+                    {
+                        fecha: new Date(),
+                        descripcion : ' su nombre se encuentra repetido ',
+                        estado : 'RECHAZADO',
+                        codigoModerador: 'Moderador1'
+                    }
+                ],
+                telefonos: ['3456789', '7462525'],
+                estado: 'ACTIVO',
+                _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Negocio'
+            }
+        ],
+        recomendaciones: [
+            {
+                _id: 'Negocio3',
+                nombre: 'Museo Civil',
+                descripcion: 'Museo de la historia civil Armenia ',
+                codigoCliente: 'Cliente3',
+                ubicacion: {
+                    latitud: 5.540130,
+                    longitud: -75.665660
+                },
+                imagenes: ['imagen1', 'imagen2'],
+                tipoNegocio: 'MUSEO',
+                horarios: [
+                    {
+                        dia: 'LUNES',
+                        horaInicio: '08:00',
+                        horaFin: '16:00'
+                    }
+                ],
+                historialRevicion: [
+                    {
+                        fecha: new Date(),
+                        descripcion : ' no cumple con los requerimientos  ',
+                        estado : 'RECHAZADO',
+                        codigoModerador: 'Moderador1'
+                    }
+                ],
+
+                telefonos: ['310493', '201799'],
+                estado: 'ACTIVO',
+                _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Negocio'
+            }
+        ]
 
     },
     {
@@ -53,7 +284,71 @@ db.clientes.insertMany([
         password: 'mipassword',
         nombre: 'Maria Jose',
         estado: 'ACTIVO',
-        _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Cliente'
+        _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Cliente',
+        favoritos: [
+            {
+                _id: 'Negocio5',
+                nombre: 'Hotel el eclipce',
+                descripcion: 'Agradable hotel ubicado a la salidad de armenia hacia montenegro ',
+                codigoCliente: 'Cliente1',
+                ubicacion: {
+                    latitud: 4.4444,
+                    longitud: -22.6789
+                },
+                imagenes: ['imagen1', 'imagen2'],
+                tipoNegocio: 'Hotel',
+                horarios: [
+                    {
+                        dia: 'LUNES',
+                        horaInicio: '07:00',
+                        horaFin: '07:00'
+                    }
+                ],
+                historialRevicion: [
+                    {
+                        fecha: new Date(),
+                        descripcion : ' no se describe bien las carateristicas del tipo d enegocio  ',
+                        estado : 'RECHAZADO',
+                        codigoModerador: 'Moderador1'
+                    }
+                ],
+                telefonos: ['321564789', '7654451'],
+                estado: 'ACTIVO',
+                _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Negocio'
+            }
+        ],
+        recomendaciones: [
+            {
+                _id: 'Negocio5',
+                nombre: 'Hotel el eclipce',
+                descripcion: 'Agradable hotel ubicado a la salidad de armenia hacia montenegro ',
+                codigoCliente: 'Cliente1',
+                ubicacion: {
+                    latitud: 4.4444,
+                    longitud: -22.6789
+                },
+                imagenes: ['imagen1', 'imagen2'],
+                tipoNegocio: 'Hotel',
+                horarios: [
+                    {
+                        dia: 'LUNES',
+                        horaInicio: '07:00',
+                        horaFin: '07:00'
+                    }
+                ],
+                historialRevicion: [
+                    {
+                        fecha: new Date(),
+                        descripcion : ' no se describe bien las carateristicas del tipo d enegocio  ',
+                        estado : 'RECHAZADO',
+                        codigoModerador: 'Moderador1'
+                    }
+                ],
+                telefonos: ['321564789', '7654451'],
+                estado: 'ACTIVO',
+                _class: 'co.edu.uniquindio.UniLocal.modelo.documentos.Negocio'
+            }
+        ]
     }
 ]);
 db.negocios.insertMany([
@@ -254,7 +549,7 @@ db.comentarios.insertMany([
 ]);
 db.moderador.insertMany([
     {
-        _id:'Moderador 1',
+        _id:'Moderador_1',
         nombre:'Julian',
         password:'mipassword',
         email:'Jul@gmail.com',

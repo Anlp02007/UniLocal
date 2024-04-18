@@ -2,8 +2,7 @@ package co.edu.uniquindio.uniLocal.servicios.implementaciones;
 
 import co.edu.uniquindio.uniLocal.dto.ComentarioDTO.ComentarioDTO;
 import co.edu.uniquindio.uniLocal.dto.ComentarioDTO.ComentarioDTOGet;
-import co.edu.uniquindio.uniLocal.dto.EmailDTO;
-import co.edu.uniquindio.uniLocal.dto.ResponderComDTO;
+import co.edu.uniquindio.uniLocal.dto.ComentarioDTO.ResponderComDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.documento.Comentario;
 import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
@@ -54,18 +53,18 @@ public class ComentarioServicioImp implements ComentarioServicio {
         Comentario comentario = new Comentario();
         comentario.setFecha(LocalDateTime.now().toLocalDate());
         comentario.setCodigoCliente(comentarioDTO.codigoCliente());
-        comentario.setCodigoComentario(comentarioDTO.codigoComentario());
+        //comentario.setCodigoComentario(comentarioDTO.codigoComentario());
         comentario.setCodigoNegocio(comentarioDTO.codigoNegocio());
         comentario.setMensaje(comentarioDTO.mensaje());
         comentario.setCalificacion(comentarioDTO.calificaion());
 
         String email = clienteRepo.findyById(negocioOptional.getCodigoCliente()).getEmail();
 
-        emailServicio.enviarCorreo(new EmailDTO(
+       /* emailServicio.enviarCorreo(new EmailDTO(
                 "Comentario",
                 comentario.getMensaje(),
                 email
-        ));
+        ));*/
 
         Comentario comentarioGuardado = comentarioRepo.save(comentario);
 
@@ -91,6 +90,9 @@ public class ComentarioServicioImp implements ComentarioServicio {
 
         String email = clienteRepo.findyById(comentario.getCodigoCliente()).getEmail();
 
+        if(comentario.getRespuesta() == null)
+            comentario.setRespuesta(new ArrayList<>());
+
         comentario.setFecha(LocalDateTime.now().toLocalDate());
         comentario.setCodigoCliente(responderComDTO.codigoCliente());
         comentario.setCodigoComentario(responderComDTO.codigoComentario());
@@ -100,12 +102,12 @@ public class ComentarioServicioImp implements ComentarioServicio {
 
 
 
-        emailServicio.enviarCorreo(new EmailDTO(
+   /*     emailServicio.enviarCorreo(new EmailDTO(
                 "Comentario",
                 ";Cliente con id: "+responderComDTO.codigoCliente() +
                         " Responde:\n"+ responderComDTO.respuesta(),
                 email
-        ));
+        ));*/
 
         Comentario respuestaGuardada  = comentarioRepo.save(comentario);
 
@@ -125,7 +127,7 @@ public class ComentarioServicioImp implements ComentarioServicio {
                  cliente.getFotoPerfil()
          )).toList();*/
 
-       if (listaComentarios.isEmpty()){
+       if (!listaComentarios.isEmpty()){
 
           return listaComentarios.stream().map(comentario ->
 
@@ -148,7 +150,7 @@ public class ComentarioServicioImp implements ComentarioServicio {
     @Override
     public float calcularPromedioCalificaciones(String codigoNegocio) {
 
-        float comentario= comentarioRepo.calcularPromedio(codigoNegocio);
+        float comentario = comentarioRepo.calcularPromedio(codigoNegocio);
 
 
         return comentario;

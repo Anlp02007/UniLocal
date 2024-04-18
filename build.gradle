@@ -16,6 +16,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
+
     implementation 'com.cloudinary:cloudinary-http45:1.38.0'
     implementation 'org.springframework.security:spring-security-crypto:6.2.2'
     implementation 'io.jsonwebtoken:jjwt-api:0.12.5'

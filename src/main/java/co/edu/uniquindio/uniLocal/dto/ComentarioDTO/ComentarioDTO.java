@@ -5,15 +5,11 @@ import java.time.LocalDate;
 public record ComentarioDTO(
         String foto,
         LocalDate fecha,
-
         String codigoCliente,
-
         String codigoNegocio,
-
-        String codigoComentario,
-
+      //  String codigoComentario,
         String mensaje,
-        int calificaion
+        int calificacion
 
 
 ) {

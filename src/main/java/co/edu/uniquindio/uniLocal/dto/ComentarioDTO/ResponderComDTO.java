@@ -1,4 +1,4 @@
-package co.edu.uniquindio.uniLocal.dto;
+package co.edu.uniquindio.uniLocal.dto.ComentarioDTO;
 
 import java.time.LocalDate;
 

@@ -1,6 +1,7 @@
 package co.edu.uniquindio.uniLocal.servicios.implementaciones;
 
 import co.edu.uniquindio.uniLocal.dto.*;
+import co.edu.uniquindio.uniLocal.dto.HistorialRevisionDTO.HistorialRevisionDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Moderador;
 import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
 import co.edu.uniquindio.uniLocal.modelo.entidades.HistoriaRevicion;
@@ -8,6 +9,8 @@ import co.edu.uniquindio.uniLocal.modelo.enums.EstadoNegocio;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.repositorios.ModeradorRepo;
 import co.edu.uniquindio.uniLocal.repositorios.NegocioRepo;
+import co.edu.uniquindio.uniLocal.servicios.interfaces.ClienteServicio;
+import co.edu.uniquindio.uniLocal.servicios.interfaces.EmailServicio;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ModeradorServicio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,8 @@ public class ModeradorServicioImp implements ModeradorServicio {
     private final ModeradorRepo moderadorRepo;
 
     private final NegocioRepo negocioRepo;
+    private final ClienteServicio clienteServicio;
+    private final EmailServicio emailServicio;
     @Override
     public void iniciarSesion(SesionDTO sesionDTO) throws Exception {
 
@@ -82,17 +87,17 @@ public class ModeradorServicioImp implements ModeradorServicio {
 
     }
 
-    public void editarPerfil(ActualizarModeradorDTO actualizarModeradorDTODTO) throws Exception {
+    public void editarPerfil(ActualizarModeradorDTO actualizarModeradorDTO) throws Exception {
 
-        Optional<Moderador> moderadorOptional = moderadorRepo.findById(actualizarModeradorDTODTO.id());
+        Optional<Moderador> moderadorOptional = moderadorRepo.findById(actualizarModeradorDTO.id());
 
         if (moderadorOptional.isEmpty()){
             throw new Exception("Ecliente no esta registrado");
 
         }
         Moderador moderador = moderadorOptional.get();
-        moderador.setNombre(actualizarModeradorDTODTO.nombre());
-        moderador.setEmail(actualizarModeradorDTODTO.email());
+        moderador.setNombre(actualizarModeradorDTO.nombre());
+        moderador.setEmail(actualizarModeradorDTO.email());
 
 
         moderadorRepo.save(moderador);
@@ -135,6 +140,42 @@ public class ModeradorServicioImp implements ModeradorServicio {
         negocioRepo.save(negocioOptional);
         return historiaRevicion;
     }
+
+
+
+    @Override
+    public void registrarRevision(HistorialRevisionDTO historialDTO) throws Exception{
+
+        Negocio negocio = negocioRepo.findByCodigoNegocio(historialDTO.codigoNegocio());
+        if(negocio == null){
+            throw new Exception("El negocio no existe");
+        }
+
+        HistoriaRevicion historiaRevicion = new HistoriaRevicion (
+                historialDTO.fecha(),
+                historialDTO.descripcion(),
+                historialDTO.estadoNegocio(),
+                historialDTO.codigoModerador()
+        );
+
+        String correoUsuario = clienteServicio.getCliente(negocio.getCodigoCliente()).email();
+
+        String mensaje = "El lugar fue " + historialDTO.estadoNegocio();
+        if(historialDTO.estadoNegocio() == EstadoNegocio.RECHAZADO ){
+            mensaje += " por el motivo de " + historialDTO.descripcion();
+        }
+
+        emailServicio.enviarCorreo(new EmailDTO(
+                "Revision de negocio",
+                mensaje,
+                correoUsuario
+        ));
+
+        negocio.setEstadoNegocio(historialDTO.estadoNegocio());
+        negocio.getHistorialRevicion().add(historiaRevicion);
+        negocioRepo.save(negocio);
+    }
+
 
 
     public void inactivarNegocios() {

@@ -2,7 +2,7 @@ package co.edu.uniquindio.uniLocal.servicios.interfaces;
 
 import co.edu.uniquindio.uniLocal.dto.ComentarioDTO.ComentarioDTO;
 import co.edu.uniquindio.uniLocal.dto.ComentarioDTO.ComentarioDTOGet;
-import co.edu.uniquindio.uniLocal.dto.ResponderComDTO;
+import co.edu.uniquindio.uniLocal.dto.ComentarioDTO.ResponderComDTO;
 
 import java.util.List;
 
