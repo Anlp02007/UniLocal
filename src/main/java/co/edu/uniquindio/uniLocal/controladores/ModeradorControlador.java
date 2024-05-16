@@ -3,6 +3,7 @@ package co.edu.uniquindio.uniLocal.controladores;
 import co.edu.uniquindio.uniLocal.dto.ActualizarModeradorDTO;
 import co.edu.uniquindio.uniLocal.dto.HistorialRevisionDTO.HistorialRevisionDTO;
 import co.edu.uniquindio.uniLocal.dto.ItemModeradorDTO;
+import co.edu.uniquindio.uniLocal.dto.ItemNegocioDTO;
 import co.edu.uniquindio.uniLocal.servicios.interfaces.ModeradorServicio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,12 @@ public class ModeradorControlador {
     @GetMapping("/listarModeradores")
     public ResponseEntity<List<ItemModeradorDTO>> listarModeradores() throws Exception{
         List<ItemModeradorDTO> moreadores =  moderadorServicio.listarModeradoresActivos();
+        return ResponseEntity.ok().body(moreadores);
+    }
+
+    @GetMapping("/listarNegocios")
+    public ResponseEntity<List<ItemNegocioDTO>> listarNegocios() throws Exception{
+        List<ItemNegocioDTO> moreadores = moderadorServicio.ListarNegocios();
         return ResponseEntity.ok().body(moreadores);
     }
 

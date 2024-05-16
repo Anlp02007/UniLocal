@@ -30,5 +30,4 @@ public interface ClienteServicio extends CuentaServicio{
 
 
 
-
 }

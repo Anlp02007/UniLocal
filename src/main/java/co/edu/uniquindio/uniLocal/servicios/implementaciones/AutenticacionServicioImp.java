@@ -6,6 +6,7 @@ import co.edu.uniquindio.uniLocal.dto.LoginDTO;
 import co.edu.uniquindio.uniLocal.dto.TokenDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.documento.Moderador;
+import co.edu.uniquindio.uniLocal.modelo.enums.Ciudad;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal.repositorios.ModeradorRepo;
@@ -19,9 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -45,6 +44,10 @@ public class AutenticacionServicioImp implements AutenticacionServicio {
         if (clienteOptional.isEmpty()) {
             throw new Exception("El correo no se encuentra registrado");
         }
+
+        if(clienteOptional.get().getEstadoRegistro() == EstadoRegistro.INACTIVO)
+            throw new Exception("El cliente esta inactivo");
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Cliente cliente = clienteOptional.get();
         System.out.println("Login: " + loginDTO.password());
@@ -145,6 +148,12 @@ public class AutenticacionServicioImp implements AutenticacionServicio {
 
 
     }
+
+    @Override
+    public List<Ciudad> listarCiudades() {
+        return Arrays.stream(Ciudad.values()).toList();
+    }
+
     private boolean existeNickname(String nickname) {
 
         Cliente clienten = clienteRepo.buscarPorNickname(nickname);

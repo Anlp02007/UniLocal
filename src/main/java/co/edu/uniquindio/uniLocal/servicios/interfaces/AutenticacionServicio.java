@@ -3,6 +3,9 @@ package co.edu.uniquindio.uniLocal.servicios.interfaces;
 import co.edu.uniquindio.uniLocal.dto.ClienteDTO.RegistroClienteDTO;
 import co.edu.uniquindio.uniLocal.dto.LoginDTO;
 import co.edu.uniquindio.uniLocal.dto.TokenDTO;
+import co.edu.uniquindio.uniLocal.modelo.enums.Ciudad;
+
+import java.util.List;
 
 public interface AutenticacionServicio {
     TokenDTO iniciarSesionCliente(LoginDTO loginDTO) throws Exception;
@@ -15,4 +18,5 @@ public interface AutenticacionServicio {
 
     String registrarse(RegistroClienteDTO registroClienteDTO) throws Exception;
 
+    List<Ciudad> listarCiudades();
 }

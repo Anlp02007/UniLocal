@@ -11,6 +11,7 @@ import co.edu.uniquindio.uniLocal.dto.SesionDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Horario;
+import co.edu.uniquindio.uniLocal.modelo.enums.EstadoNegocio;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal.repositorios.NegocioRepo;
@@ -62,6 +63,11 @@ public class ClienteServicioImp implements ClienteServicio {
             throw new Exception("Ecliente no esta registrado");
 
         }
+        if(clienteOptional.get().getEstadoRegistro() == EstadoRegistro.INACTIVO)
+            throw new Exception("El cliente esta inactivo");
+
+
+
         Cliente cliente = clienteOptional.get();
         cliente.setNombre(actualizarClienteDTO.nombre());
         cliente.setCiudad(actualizarClienteDTO.ciudadResidencia());
@@ -120,9 +126,10 @@ public class ClienteServicioImp implements ClienteServicio {
 
             if (clienteOptional.isEmpty()){
                 throw new Exception("Non se encontro el cliente a eliminar");
-
-
             }
+
+        if(clienteOptional.get().getEstadoRegistro() == EstadoRegistro.INACTIVO)
+            throw new Exception("El cliente ya fue eliminado");
 
         Cliente cliente = clienteOptional.get();
         cliente.setEstadoRegistro(EstadoRegistro.INACTIVO);
@@ -135,9 +142,14 @@ public class ClienteServicioImp implements ClienteServicio {
 
         Optional<Cliente> cliente = clienteRepo.findByEmail(email);
 
+
+
         if (cliente.isEmpty()){
             throw  new Exception("El email dado no esta asociado a ningun cliente");
         }
+
+        if(cliente.get().getEstadoRegistro() == EstadoRegistro.INACTIVO)
+            throw new Exception("El cliente no esta activo");
 
         emailServicio.enviarCorreo(new EmailDTO(
                 "Recuperación de contraseña",
@@ -178,7 +190,8 @@ public class ClienteServicioImp implements ClienteServicio {
 
         List<Cliente> clientes = clienteRepo.findAll();
 
-        return (List<ItemClienteDTO>) clientes.stream().map(cliente ->
+        return (List<ItemClienteDTO>) clientes.stream()
+                .map(cliente ->
                 new ItemClienteDTO(
                         cliente.getCodigoCliente(),
                         cliente.getNombre(),
@@ -223,8 +236,17 @@ public class ClienteServicioImp implements ClienteServicio {
         if(cliente == null)
             throw new Exception("Este cliente no esta registrado");
 
+        if(cliente.getEstadoRegistro() == EstadoRegistro.INACTIVO)
+            throw new Exception("El cliente no esta activo");
+
         if(negocio == null)
             throw new Exception("Este negocio no esta registrado");
+
+        if(negocio.getEstadoRegistros() == EstadoRegistro.INACTIVO)
+            throw new Exception("El negocio esta inactivo");
+
+        if(negocio.getEstadoNegocio() != EstadoNegocio.APROBADO)
+            throw new Exception("El negocio debe estar aprobado");
 
         if(cliente.getFavoritos() == null)
             cliente.setFavoritos(new ArrayList<>());
@@ -246,10 +268,15 @@ public class ClienteServicioImp implements ClienteServicio {
         if(cliente == null)
             throw new Exception("Este cliente no esta registrado");
 
+        if(cliente.getEstadoRegistro() == EstadoRegistro.INACTIVO)
+            throw new Exception("El cliente no esta activo");
+
         if(cliente.getFavoritos().isEmpty())
             throw new Exception("No tiene negocios en la lista de favoritos");
 
-        return (List<NegocioGetDTO>) cliente.getFavoritos().stream().map(negocio ->
+        return (List<NegocioGetDTO>) cliente.getFavoritos().stream()
+                .filter(negocio -> EstadoRegistro.ACTIVO.equals(negocio.getEstadoRegistros()))
+                .map(negocio ->
 
                 new NegocioGetDTO(
                         negocio.getCodigoNegocio(),
@@ -275,6 +302,9 @@ public class ClienteServicioImp implements ClienteServicio {
 
         if(cliente == null)
             throw new Exception("Este cliente no esta registrado");
+
+        if(cliente.getEstadoRegistro() == EstadoRegistro.INACTIVO)
+            throw new Exception("El cliente no esta activo");
 
         for (Negocio negocio : cliente.getFavoritos()) {
             if (negocio.getCodigoNegocio().equalsIgnoreCase(favoritosDTO.codigoNegocio())) {
@@ -302,6 +332,15 @@ public class ClienteServicioImp implements ClienteServicio {
         if(cliente == null)
            return;
 
+        if(cliente.getEstadoRegistro() == EstadoRegistro.INACTIVO)
+            return;
+
+        if(negocio.getEstadoRegistros() == EstadoRegistro.INACTIVO)
+            return;
+        if(negocio.getEstadoNegocio() != EstadoNegocio.APROBADO)
+            return;
+
+
         if(cliente.getRecomendaciones() == null)
             cliente.setRecomendaciones(new ArrayList<>());
 
@@ -316,6 +355,7 @@ public class ClienteServicioImp implements ClienteServicio {
         clienteRepo.save(cliente);
     }
 
+
     @Override
     public List<NegocioGetDTO> listarRecomendaciones(String idCliente) throws Exception{
 
@@ -324,10 +364,16 @@ public class ClienteServicioImp implements ClienteServicio {
         if(cliente == null)
             throw new Exception("Este cliente no esta registrado");
 
+        if(cliente.getEstadoRegistro() == EstadoRegistro.INACTIVO)
+            throw new Exception("Este cliente esta inactivo");
+
+
         if(cliente.getRecomendaciones() == null || cliente.getRecomendaciones().isEmpty())
             throw new Exception("No tiene negocios en la lista de recomendaciones");
 
-        return (List<NegocioGetDTO>) cliente.getRecomendaciones().stream().map(negocio ->
+        return (List<NegocioGetDTO>) cliente.getRecomendaciones().stream()
+                .filter(negocio -> EstadoRegistro.ACTIVO.equals(negocio.getEstadoRegistros())).
+                map(negocio ->
                 new NegocioGetDTO(
                         negocio.getCodigoNegocio(),
                         negocio.getNombre(),
@@ -353,6 +399,14 @@ public class ClienteServicioImp implements ClienteServicio {
 
         if(cliente == null)
             throw new Exception("Este cliente no esta registrado");
+
+        if(cliente.getEstadoRegistro() == EstadoRegistro.INACTIVO)
+            throw new Exception("Este cliente esta inactivo");
+
+        if(negocio.getEstadoRegistros() == EstadoRegistro.INACTIVO)
+            throw new Exception("Este negocio esta inactivo");
+
+
 
         for (Negocio neg : cliente.getRecomendaciones()) {
             if (neg.getCodigoNegocio().equalsIgnoreCase(negocio.getCodigoNegocio())) {

@@ -20,5 +20,7 @@ public interface ModeradorServicio extends CuentaServicio {
 
     void editarPerfil(ActualizarModeradorDTO actualizarModeradorDTO) throws Exception;
 
-    public List<ItemModeradorDTO> listarModeradoresActivos();
+    List<ItemModeradorDTO> listarModeradoresActivos();
+
+    List<ItemNegocioDTO> ListarNegocios();
 }

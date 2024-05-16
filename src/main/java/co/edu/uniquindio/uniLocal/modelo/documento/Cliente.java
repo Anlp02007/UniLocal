@@ -1,6 +1,7 @@
 package co.edu.uniquindio.uniLocal.modelo.documento;
 
 import co.edu.uniquindio.uniLocal.modelo.entidades.Cuenta;
+import co.edu.uniquindio.uniLocal.modelo.enums.Ciudad;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -20,7 +21,7 @@ public class Cliente extends Cuenta {
 
     private String fotoPerfil;
     private String nickname;
-    private String ciudad;
+    private Ciudad ciudad;
     private List<Negocio> favoritos;
     private List<Negocio> recomendaciones;
 

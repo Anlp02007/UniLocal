@@ -37,8 +37,6 @@ public class ModeradorServicioImp implements ModeradorServicio {
 
         Moderador moderador = moderadorRepo.findByEmailAndPassword(sesionDTO.email(),sesionDTO.password());
 
-
-
         if (moderador == null){
 
             throw new Exception("cuenta invalida");
@@ -203,6 +201,25 @@ public class ModeradorServicioImp implements ModeradorServicio {
 
         }
 
+    }
+
+    public List<ItemNegocioDTO> ListarNegocios(){
+
+        List<Negocio> negocios = negocioRepo.findAll();
+
+        return (List<ItemNegocioDTO>) negocios.stream()
+                .map(negocio ->
+                        new ItemNegocioDTO(
+                                negocio.getCodigoNegocio(),
+                                negocio.getNombre(),
+                                negocio.getUbicacion(),
+                                negocio.getHorario(),
+                                negocio.getImagen(),
+                                negocio.getDescripcion(),
+                                negocio.getTipoNegocio(),
+                                negocio.getTelefono(),
+                                negocio.getEstadoRegistros()
+                )).toList();
     }
 
 }

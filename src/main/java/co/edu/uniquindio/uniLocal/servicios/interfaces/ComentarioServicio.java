@@ -12,7 +12,7 @@ public interface ComentarioServicio {
 
     void responderComentario(ResponderComDTO responderComDTO) throws Exception;
 
-    List<ComentarioDTOGet> listarComentariosNegocio(String codigoNegocio);
+    List<ComentarioDTOGet> listarComentariosNegocio(String codigoNegocio) throws Exception;
 
     float calcularPromedioCalificaciones(String codigoNegocio);
 }

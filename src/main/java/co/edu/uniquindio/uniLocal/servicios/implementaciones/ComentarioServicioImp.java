@@ -7,6 +7,8 @@ import co.edu.uniquindio.uniLocal.dto.EmailDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.documento.Comentario;
 import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
+import co.edu.uniquindio.uniLocal.modelo.enums.EstadoNegocio;
+import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal.repositorios.ComentarioRepo;
 import co.edu.uniquindio.uniLocal.repositorios.NegocioRepo;
@@ -20,7 +22,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Transactional
 @Service
@@ -40,9 +41,11 @@ public class ComentarioServicioImp implements ComentarioServicio {
     @Override
     public void crearComentario(ComentarioDTO comentarioDTO) throws Exception {
 
-        Optional<Cliente> clienteOptional = clienteRepo.findById(comentarioDTO.codigoCliente());
 
-        if (clienteOptional.isEmpty()){
+
+        Cliente cliente = clienteRepo.findyById(comentarioDTO.codigoCliente());
+
+        if (cliente == null){
             throw new Exception("El cliente no esta registrado");
         }
         Negocio negocioOptional = negocioRepo.findByCodigoNegocio(comentarioDTO.codigoNegocio());
@@ -50,6 +53,15 @@ public class ComentarioServicioImp implements ComentarioServicio {
         if (negocioOptional==null){
             throw new Exception("El cliente no esta registrado");
         }
+
+        if(negocioOptional.getEstadoRegistros() == EstadoRegistro.INACTIVO)
+            throw new Exception("El negocio esta inactivo");
+
+        if(negocioOptional.getEstadoNegocio() != EstadoNegocio.APROBADO)
+            throw new Exception("El negocio esta inactivo");
+
+        if(cliente.getEstadoRegistro() == EstadoRegistro.INACTIVO)
+            throw new Exception("El cliente esta inactivo");
 
         Comentario comentario = new Comentario();
         comentario.setFecha(LocalDateTime.now().toLocalDate());
@@ -73,16 +85,28 @@ public class ComentarioServicioImp implements ComentarioServicio {
 
     @Override
     public void responderComentario(ResponderComDTO responderComDTO) throws Exception {
-        Optional<Cliente> clienteOptional = clienteRepo.findById(responderComDTO.codigoCliente());
 
-        if (clienteOptional.isEmpty()){
+        Cliente cliente = clienteRepo.findyById(responderComDTO.codigoCliente());
+
+
+        if (cliente == null){
             throw new Exception("El cliente no esta registrado");
         }
         Negocio negocioOptional = negocioRepo.findByCodigoNegocio(responderComDTO.codigoNegocio());
 
         if (negocioOptional==null){
-            throw new Exception("El cliente no esta registrado");
+            throw new Exception("El negocio no esta registrado");
         }
+
+        if(cliente.getEstadoRegistro() == EstadoRegistro.INACTIVO)
+            throw new Exception("El cliente esta inactivo");
+
+        if(negocioOptional.getEstadoRegistros() == EstadoRegistro.INACTIVO)
+            throw new Exception("El negocio esta inactivo");
+
+        if(negocioOptional.getEstadoNegocio() != EstadoNegocio.APROBADO)
+            throw new Exception("El negocio debe estar aprobado");
+
 
         Comentario comentario = comentarioRepo.findByCodigoComentario(responderComDTO.codigoComentario());
         if (comentario==null){
@@ -119,7 +143,17 @@ public class ComentarioServicioImp implements ComentarioServicio {
         return comentario!=null;
     }
 
-    public List<ComentarioDTOGet> listarComentariosNegocio(String codigoNegocio) {
+    public List<ComentarioDTOGet> listarComentariosNegocio(String codigoNegocio) throws Exception {
+
+        Negocio negocioOptional = negocioRepo.findByCodigoNegocio(codigoNegocio);
+        if (negocioOptional==null){
+            throw new Exception("El negocio no esta registrado");
+        }
+        if(negocioOptional.getEstadoRegistros() == EstadoRegistro.INACTIVO)
+            throw new Exception("El negocio esta inactivo");
+
+        if(negocioOptional.getEstadoNegocio() != EstadoNegocio.APROBADO)
+            throw new Exception("El negocio debe estar aprobados");
 
     List<Comentario> listaComentarios = comentarioRepo.findAllByCodigoNegocio(codigoNegocio);
         /*List<Cliente> obtenerCliente = clienteRepo.findAllByCodigoCliente(obtenerComenario.get().getCodigoCliente());

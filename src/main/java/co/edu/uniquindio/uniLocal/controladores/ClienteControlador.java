@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/cliente")
-public class ClineteControlador {
+public class ClienteControlador {
     private final ClienteServicio clienteServicio;
     private final AutenticacionServicio autenticacionServicio;
 
