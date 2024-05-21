@@ -20,7 +20,7 @@ import java.util.List;
 public class AutenticacionControlador {
     private final AutenticacionServicio autenticacionServicio;
     @PostMapping("/login")
-    public ResponseEntity<MensajeDTO<TokenDTO>> iniciarSesionCliente(
+    public ResponseEntity<MensajeDTO<TokenDTO>> iniciarSesion(
             @Valid @RequestBody LoginDTO loginDTO)throws Exception{
 
         TokenDTO tokenDTO = autenticacionServicio.iniciarSesion(loginDTO);
