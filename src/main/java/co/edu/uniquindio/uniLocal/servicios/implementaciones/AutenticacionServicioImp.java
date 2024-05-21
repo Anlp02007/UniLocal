@@ -35,32 +35,63 @@ public class AutenticacionServicioImp implements AutenticacionServicio {
     private final JWTUtils jwtUtils;
     private final ModeradorServicio moderadorServicio;
     @Override
-    public TokenDTO iniciarSesionCliente(LoginDTO loginDTO) throws Exception  {
+    public TokenDTO iniciarSesion(LoginDTO loginDTO) throws Exception  {
 
 
         moderadorServicio.inactivarNegocios();
 
         Optional<Cliente> clienteOptional = clienteRepo.findByEmail(loginDTO.email());
-        if (clienteOptional.isEmpty()) {
-            throw new Exception("El correo no se encuentra registrado");
+        if (!clienteOptional.isEmpty()) {
+
+
+            if(clienteOptional.get().getEstadoRegistro() == EstadoRegistro.INACTIVO)
+                throw new Exception("El cliente esta inactivo");
+
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            Cliente cliente = clienteOptional.get();
+            System.out.println("Login: " + loginDTO.password());
+            System.out.println("Moderador: " + cliente.getPassword());
+            System.out.println("Comparacion: " + passwordEncoder.matches(loginDTO.password(), cliente.getPassword()));
+            if( !passwordEncoder.matches(loginDTO.password(), cliente.getPassword()) ) {
+                throw new Exception("La contraseña es incorrecta");
+            }
+            Map<String, Object> map = new HashMap<>();
+            map.put("rol", "CLIENTE");
+            map.put("nombre", cliente.getNombre());
+            map.put("id", cliente.getCodigoCliente());
+            return new TokenDTO( jwtUtils.generarToken(cliente.getEmail(), map) );
+
+        }else{
+            Optional<Moderador> moderadorOptional = moderadorRepo.findByEmail(loginDTO.email());
+            if (!moderadorOptional.isEmpty()) {
+
+                if(moderadorOptional.get().getEstadoRegistro() == EstadoRegistro.INACTIVO)
+                    throw new Exception("El cliente esta inactivo");
+
+
+                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                Moderador moderador = moderadorOptional.get();
+                System.out.println("Login: " + loginDTO.password());
+                System.out.println("Moderador: " + moderador.getPassword());
+                System.out.println("Comparacion: " + passwordEncoder.matches(loginDTO.password(), moderador.getPassword()));
+                if( !loginDTO.password().equals(moderador.getPassword()))  {
+                    throw new Exception("La contraseña es incorrecta");
+                }
+                Map<String, Object> map = new HashMap<>();
+                map.put("rol", "MODERADOR");
+                map.put("nombre", moderador.getNombre());
+                map.put("id", moderador.getCodigoModerador());
+                return new TokenDTO( jwtUtils.generarToken(moderador.getEmail(), map) );
+
+            }
+            else {
+                throw new Exception("El correo no se encuentra registrado");
+            }
         }
 
-        if(clienteOptional.get().getEstadoRegistro() == EstadoRegistro.INACTIVO)
-            throw new Exception("El cliente esta inactivo");
 
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        Cliente cliente = clienteOptional.get();
-        System.out.println("Login: " + loginDTO.password());
-        System.out.println("Moderador: " + cliente.getPassword());
-        System.out.println("Comparacion: " + passwordEncoder.matches(loginDTO.password(), cliente.getPassword()));
-        if( !passwordEncoder.matches(loginDTO.password(), cliente.getPassword()) ) {
-            throw new Exception("La contraseña es incorrecta");
-        }
-        Map<String, Object> map = new HashMap<>();
-        map.put("rol", "CLIENTE");
-        map.put("nombre", cliente.getNombre());
-        map.put("id", cliente.getCodigoCliente());
-        return new TokenDTO( jwtUtils.generarToken(cliente.getEmail(), map) );
+
+
     }
 
     public TokenDTO iniciarSesionModerador(LoginDTO loginDTO) throws Exception  {

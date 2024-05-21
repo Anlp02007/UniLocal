@@ -57,6 +57,7 @@ public class FiltroToken extends OncePerRequestFilter {
                     System.out.println("Hola a todos");
                     if (token != null) {
                         Jws<Claims> jws = jwtUtils.parseJwt(token);
+
                         if (!jws.getPayload().get("rol").equals("CLIENTE")) {
                             crearRespuestaError("No tiene permisos para acceder a este recurso",
 

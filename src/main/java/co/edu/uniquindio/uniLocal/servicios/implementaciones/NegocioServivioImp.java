@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Transactional
@@ -79,11 +80,17 @@ public class NegocioServivioImp implements NegocioServicio {
         }
 
         Negocio negocio = negocioRepo.findByCodigoNegocio(actualizarNegocioDTO.id());
+        if(!actualizarNegocioDTO.id().isEmpty())
         negocio.setNombre(actualizarNegocioDTO.nombre());
+        if(!actualizarNegocioDTO.descripcion().isEmpty())
         negocio.setDescripcion(actualizarNegocioDTO.descripcion());
+        if(!actualizarNegocioDTO.telefono().isEmpty())
         negocio.setTelefono(actualizarNegocioDTO.telefono());
+
         negocio.setUbicacion(actualizarNegocioDTO.ubicacion());
+        if(!actualizarNegocioDTO.imagen().isEmpty())
         negocio.setImagen(actualizarNegocioDTO.imagen());
+        if(!actualizarNegocioDTO.horario().isEmpty())
         negocio.setHorario(actualizarNegocioDTO.horario());
         negocio.setEstadoNegocio(EstadoNegocio.PENDIENTE);
 
@@ -185,9 +192,9 @@ public class NegocioServivioImp implements NegocioServicio {
         return negocios;
     }
 
-
-
-
+    public List<TipoNegocio> listarCategorias() {
+        return Arrays.stream(TipoNegocio.values()).toList();
+    }
 
     private NegocioGetDTO convertirNegocioToNegocioDTO(Negocio negocio){
 

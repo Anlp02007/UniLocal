@@ -7,6 +7,7 @@ import co.edu.uniquindio.uniLocal.dto.NegocioDTO.NegocioGetDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Horario;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoNegocio;
+import co.edu.uniquindio.uniLocal.modelo.enums.TipoNegocio;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public interface NegocioServicio {
     boolean verificarSiEstaAbierto(List<Horario> horarios);
 
     List<NegocioGetDTO> listarNegociosPorCliente(String codigo) throws Exception;
+    List<TipoNegocio> listarCategorias();
 
 
 }

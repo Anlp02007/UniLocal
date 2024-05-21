@@ -8,7 +8,7 @@ import co.edu.uniquindio.uniLocal.modelo.enums.Ciudad;
 import java.util.List;
 
 public interface AutenticacionServicio {
-    TokenDTO iniciarSesionCliente(LoginDTO loginDTO) throws Exception;
+    TokenDTO iniciarSesion(LoginDTO loginDTO) throws Exception;
 
     TokenDTO iniciarSesionModerador(LoginDTO loginDTO) throws Exception;
 

@@ -19,11 +19,11 @@ import java.util.List;
 
 public class AutenticacionControlador {
     private final AutenticacionServicio autenticacionServicio;
-    @PostMapping("/login-cliente")
+    @PostMapping("/login")
     public ResponseEntity<MensajeDTO<TokenDTO>> iniciarSesionCliente(
             @Valid @RequestBody LoginDTO loginDTO)throws Exception{
 
-        TokenDTO tokenDTO = autenticacionServicio.iniciarSesionCliente(loginDTO);
+        TokenDTO tokenDTO = autenticacionServicio.iniciarSesion(loginDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, tokenDTO));
 
     }
@@ -52,15 +52,15 @@ public class AutenticacionControlador {
     public ResponseEntity<MensajeDTO<TokenDTO>> validarCliente(
             @Valid @RequestBody LoginDTO loginDTO)throws Exception{
 
-        TokenDTO tokenDTO = autenticacionServicio.iniciarSesionCliente(loginDTO);
+        TokenDTO tokenDTO = autenticacionServicio.iniciarSesion(loginDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, tokenDTO));
     }
 
     @GetMapping("/enviarLinkRecuperacion/{email}")
-    public ResponseEntity<String> enviarLink(@PathVariable String email) throws Exception{
+    public ResponseEntity<MensajeDTO<String>>enviarLink(@PathVariable String email) throws Exception{
 
         autenticacionServicio.enviarLinkRecuperacion(email);
-        return ResponseEntity.ok().body("Se envio el correo correctamente");
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, "Se envio el correo correctamente"));
     }
 
 }
