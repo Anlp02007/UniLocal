@@ -43,6 +43,7 @@ public class AutenticacionControlador {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "El cliente se ha registrado correctamente"));
     }
 
+
     @GetMapping("/listar-ciudades")
     public ResponseEntity<MensajeDTO<List<Ciudad>>> registrarCliente()throws Exception{
         return ResponseEntity.ok().body(new MensajeDTO<>(false, autenticacionServicio.listarCiudades()));

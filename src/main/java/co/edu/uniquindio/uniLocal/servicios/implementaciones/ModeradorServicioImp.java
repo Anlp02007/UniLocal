@@ -222,5 +222,16 @@ public class ModeradorServicioImp implements ModeradorServicio {
                 )).toList();
     }
 
+    @Override
+    public ActualizarModeradorDTO getModerador(String codiString) throws Exception {
+        Optional<Moderador> cl = moderadorRepo.findById(codiString);
+        return ActualizarModeradorDTO.builder()
+
+                .nombre(cl.get().getNombre())
+
+                .email(cl.get().getEmail())
+                .build();
+    }
+
 }
 

@@ -23,4 +23,5 @@ public interface ModeradorServicio extends CuentaServicio {
     List<ItemModeradorDTO> listarModeradoresActivos();
 
     List<ItemNegocioDTO> ListarNegocios();
+    ActualizarModeradorDTO getModerador(String codiString)throws Exception;
 }
