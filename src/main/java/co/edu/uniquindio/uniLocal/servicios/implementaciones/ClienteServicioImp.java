@@ -288,6 +288,7 @@ public class ClienteServicioImp implements ClienteServicio {
                         negocio.getTipoNegocio(),
                         negocio.getTelefono(),
                         negocio.getEstadoRegistros(),
+                        negocio.getEstadoNegocio(),
                         verificarSiEstaAbierto(negocio.getHorario())
                 )
         ).toList();
@@ -384,6 +385,7 @@ public class ClienteServicioImp implements ClienteServicio {
                         negocio.getTipoNegocio(),
                         negocio.getTelefono(),
                         negocio.getEstadoRegistros(),
+                        negocio.getEstadoNegocio(),
                         verificarSiEstaAbierto(negocio.getHorario())
                 )
         ).toList();

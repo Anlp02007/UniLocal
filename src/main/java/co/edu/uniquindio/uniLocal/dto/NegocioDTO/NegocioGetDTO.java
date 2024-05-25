@@ -2,6 +2,7 @@ package co.edu.uniquindio.uniLocal.dto.NegocioDTO;
 
 import co.edu.uniquindio.uniLocal.modelo.entidades.Horario;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Ubicacion;
+import co.edu.uniquindio.uniLocal.modelo.enums.EstadoNegocio;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.modelo.enums.TipoNegocio;
 
@@ -18,6 +19,7 @@ public record NegocioGetDTO(
         TipoNegocio tipoNegocio,
         List<String> telefono,
         EstadoRegistro estadoRegistro,
+        EstadoNegocio estadoNegocio,
         boolean estaAbierto
 ) {
 }

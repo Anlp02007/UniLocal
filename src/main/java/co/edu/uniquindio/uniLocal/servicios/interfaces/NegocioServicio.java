@@ -36,4 +36,5 @@ public interface NegocioServicio {
     List<TipoNegocio> listarCategorias();
 
 
+    List<NegocioGetDTO> obtenerNegocios();
 }

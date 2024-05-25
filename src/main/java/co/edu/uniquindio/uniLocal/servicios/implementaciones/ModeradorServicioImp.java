@@ -159,6 +159,9 @@ public class ModeradorServicioImp implements ModeradorServicio {
         String correoUsuario = clienteServicio.getCliente(negocio.getCodigoCliente()).email();
 
         String mensaje = "El lugar fue " + historialDTO.estadoNegocio();
+
+
+
         if(historialDTO.estadoNegocio() == EstadoNegocio.RECHAZADO ){
             mensaje += " por el motivo de " + historialDTO.descripcion();
         }
