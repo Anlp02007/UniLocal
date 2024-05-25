@@ -1,19 +1,19 @@
-# Use an OpenJDK base image
-FROM openjdk:17
-# Set the working directory in the container
-WORKDIR /app
-# Copy the Gradle build files
-COPY build.gradle .
-COPY settings.gradle .
-COPY gradlew .
-COPY gradle/ ./gradle/
-# Copy the application source code
-COPY src/ ./src/
-# Build the application using Gradle
-RUN chmod +x gradlew
+#
+# Build stage
+#
+FROM gradle:latest AS build
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle clean
+RUN gradle bootJar
 
-RUN ./gradlew build
-# Set the port to expose
+
+#
+# Package stage
+#
+FROM openjdk:17
+ARG JAR_FILE=build/libs/*.jar
+COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
 EXPOSE ${PORT}
-# Set the entry point to run the application
-ENTRYPOINT ["java", "-jar", "build/libs/UniLocal-1.0-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar","/app.jar"]
+
