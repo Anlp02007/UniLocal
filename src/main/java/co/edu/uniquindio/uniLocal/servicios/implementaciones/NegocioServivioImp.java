@@ -196,6 +196,11 @@ public class NegocioServivioImp implements NegocioServicio {
         return Arrays.stream(TipoNegocio.values()).toList();
     }
 
+    @Override
+    public List<NegocioGetDTO> obtenerNegocios() {
+        return negocioRepo.findAll().stream().map(this::convertirNegocioToNegocioDTO).toList();
+    }
+
     private NegocioGetDTO convertirNegocioToNegocioDTO(Negocio negocio){
 
 
@@ -211,6 +216,7 @@ public class NegocioServivioImp implements NegocioServicio {
                 negocio.getTipoNegocio(),
                 negocio.getTelefono(),
                negocio.getEstadoRegistros(),
+               EstadoNegocio.PENDIENTE,
                verificarSiEstaAbierto(negocio.getHorario())
         );
     }

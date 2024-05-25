@@ -46,9 +46,15 @@ public class NegocioController {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, negocio));
     }
 
-    @PostMapping("/listarNegocios")
-    public ResponseEntity<MensajeDTO<List<NegocioGetDTO>>> obtenerNegociosSinId(@RequestBody ItemNegocioDTO itemNegocioDTO) throws Exception {
-        List<NegocioGetDTO> listaNegocios = negocioServicio.buscarNegocios(itemNegocioDTO,"");
+    @GetMapping ("/listarNegocios")
+    public ResponseEntity<MensajeDTO<List<NegocioGetDTO>>> obtenerNegociosSinId() throws Exception {
+        List<NegocioGetDTO> listaNegocios = negocioServicio.obtenerNegocios();
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, listaNegocios));
+    }
+
+    @PostMapping ("/buscadorNegocios/{idCliente}")
+    public ResponseEntity<MensajeDTO<List<NegocioGetDTO>>> buscarNegocios(@RequestBody ItemNegocioDTO itemNegocio, @PathVariable String idCliente ) throws Exception {
+        List<NegocioGetDTO> listaNegocios = negocioServicio.buscarNegocios(itemNegocio, idCliente );
         return ResponseEntity.ok().body(new MensajeDTO<>(false, listaNegocios));
     }
     @PostMapping("/listarNegocios/{idCliente}")
