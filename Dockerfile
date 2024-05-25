@@ -10,8 +10,10 @@ COPY gradle/ ./gradle/
 # Copy the application source code
 COPY src/ ./src/
 # Build the application using Gradle
+RUN chmod +x gradlew
+
 RUN ./gradlew build
 # Set the port to expose
 EXPOSE ${PORT}
 # Set the entry point to run the application
-ENTRYPOINT ["java", "-jar", "build/libs/UniLocal-1.0-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "bbuild/libs/UniLocal-1.0-SNAPSHOT.jar"]
