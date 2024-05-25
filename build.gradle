@@ -35,8 +35,6 @@ dependencies {
     useJUnitPlatform()
 }*/
 
-
-
 java {
     sourceCompatibility = '17'
     targetCompatibility='17'
