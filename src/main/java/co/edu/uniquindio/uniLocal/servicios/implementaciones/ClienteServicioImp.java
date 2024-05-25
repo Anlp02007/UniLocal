@@ -11,6 +11,7 @@ import co.edu.uniquindio.uniLocal.dto.SesionDTO;
 import co.edu.uniquindio.uniLocal.modelo.documento.Cliente;
 import co.edu.uniquindio.uniLocal.modelo.documento.Negocio;
 import co.edu.uniquindio.uniLocal.modelo.entidades.Horario;
+import co.edu.uniquindio.uniLocal.modelo.enums.Ciudad;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoNegocio;
 import co.edu.uniquindio.uniLocal.modelo.enums.EstadoRegistro;
 import co.edu.uniquindio.uniLocal.repositorios.ClienteRepo;
@@ -70,7 +71,7 @@ public class ClienteServicioImp implements ClienteServicio {
 
         Cliente cliente = clienteOptional.get();
         cliente.setNombre(actualizarClienteDTO.nombre());
-        cliente.setCiudad(actualizarClienteDTO.ciudadResidencia());
+        cliente.setCiudad(Ciudad.valueOf(actualizarClienteDTO.ciudadResidencia()));
         cliente.setEmail(actualizarClienteDTO.email());
         cliente.setFotoPerfil(actualizarClienteDTO.fotoPerfil());
 
